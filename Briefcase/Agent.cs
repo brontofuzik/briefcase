@@ -12,5 +12,7 @@
         public string Id => $"{name}:{GetType().Name}";
 
         public virtual void Initialize() {}
+
+        public abstract void Act(IEnvironment environment);
     }
 }

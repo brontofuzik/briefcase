@@ -44,8 +44,12 @@ namespace Briefcase
 
         private void RunTurn(int turn)
         {
-            environment.Update(turn);
+            environment.BeginTurn(turn);
 
+            foreach (var agent in agents.Values)
+                agent.Act(environment);
+
+            environment.EndTurn(turn);
         }
     }
 }

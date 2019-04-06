@@ -4,8 +4,10 @@
     {
         string Id { get; }
 
+        IEnvironment Environment { get; set; }
+
         void Initialize();
 
-        void Act(IEnvironment environment);
+        void Act();
     }
 }

@@ -11,8 +11,7 @@ namespace Briefcase
         private readonly int? maxTurns;
         private int turn;
 
-        public TurnBasedMas(IEnvironment environment = null,
-            int? maxTurns = null)
+        public TurnBasedMas(IEnvironment environment = null, int? maxTurns = null)
         {
             this.environment = environment;
             this.maxTurns = maxTurns;
@@ -21,15 +20,19 @@ namespace Briefcase
         public void AddAgent(IAgent agent)
         {
             agents[agent.Id] = agent;
+            agent.Environment = environment;
         }
 
         public void Run()
         {
             Initialize();
 
+            Console.WriteLine(environment.Show());
+
             while (!maxTurns.HasValue || turn < maxTurns)
             {
                 RunTurn(turn);
+                Console.WriteLine(environment.Show());
                 turn++;
             }
         }
@@ -47,7 +50,7 @@ namespace Briefcase
             environment.BeginTurn(turn);
 
             foreach (var agent in agents.Values)
-                agent.Act(environment);
+                agent.Act();
 
             environment.EndTurn(turn);
         }

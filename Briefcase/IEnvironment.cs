@@ -9,5 +9,7 @@
 
         // Turn-based
         void EndTurn(int turn);
+
+        string Show();
     }
 }

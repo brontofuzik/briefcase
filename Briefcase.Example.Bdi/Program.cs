@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Briefcase.Example.Bdi
+﻿namespace Briefcase.Example.Bdi
 {
     class Program
     {
+        public static bool Debug = false;
+
         static void Main(string[] args)
         {
             var mas = new TurnBasedMas(new FireEnvironment());

@@ -1,81 +1,103 @@
-﻿using System;
+﻿using static Briefcase.Example.Bdi.Program;
+using System;
+using System.Text;
 using System.Linq;
 
 namespace Briefcase.Example.Bdi
 {
     class FireEnvironment : Environment
     {
-        public const int Size = 15;
+        public const int Size = 10;
 
         private readonly Random random = new Random();
 
         private readonly Terrain[] world = new Terrain[Size];
         private int firemanPosition;
 
+        private int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
+
         public override void Initialize()
         {
-            ChangeTerrain((i, _) => i == 0 ? Terrain.Water : Terrain.Normal);
+            ModifyTerrain((i, _) => i == 0 ? Terrain.Water : Terrain.Normal);
             firemanPosition = 0;
         }
 
         public override void BeginTurn(int turn)
         {
+            if (Debug) Print("Environment.BeginTurn - beginning");
+
             // Reset water
-            ChangeTerrain((_, t) => t == Terrain.GettingWater ? Terrain.Water : t);
+            ModifyTerrain((_, t) => t == Terrain.GettingWater ? Terrain.Water : t);
 
             // Start a fire!
-            if (!world.Any(t => t == Terrain.Fire))
+            if (!FireLocation.HasValue)
                 world[random.Next(1, Size)] = Terrain.Fire;
+
+            if (Debug) Print("Environment.BeginTurn - end");
         }
 
         public override void EndTurn(int turn)
         {
-            // Do nothing?
+            Print("EndTurn");
         }
 
         public Percept Perceive()
         {
-            if (firemanPosition == 0)
-            {
-                // Left edge
-                return new Percept
+            // Left edge
+            if (firemanPosition == 0) 
+                return new Percept(firemanPosition, new[]
                 {
-                    Left = Terrain.None,
-                    Center = world[firemanPosition],
-                    Right = world[firemanPosition + 1]
-                };
-            }
-            else if (firemanPosition == Size - 1)
-            {
-                // Right edge
-                return new Percept
+                        Terrain.None,
+                        world[firemanPosition],
+                        world[firemanPosition + 1]
+                });
+
+            // Right edge
+            else if (firemanPosition == Size - 1) 
+                return new Percept(firemanPosition, new[]
                 {
-                    Left = world[firemanPosition - 1],
-                    Center = world[firemanPosition],
-                    Right = Terrain.None
-                };
-            }
+                    world[firemanPosition - 1],
+                    world[firemanPosition],
+                    Terrain.None
+                });
+
+            // Middle
             else
-            {
-                // Middle
-                return new Percept
+                return new Percept(firemanPosition, new[]
                 {
-                    Left = world[firemanPosition - 1],
-                    Center = world[firemanPosition],
-                    Right = world[firemanPosition + 1]
-                };
-            }
+                    world[firemanPosition - 1],
+                    world[firemanPosition],
+                    world[firemanPosition + 1]
+                });
         }
 
         public bool Act(Action action)
         {
-            switch (action.Type)
+            switch (action)
             {
-                case "move":
-                    firemanPosition += action.Params == "right" ? +1 : -1;
-                    return true;
+                case Action.MoveLeft:
+                    if (firemanPosition > 0)
+                    {
+                        firemanPosition -= 1;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
-                case "get-water":
+                case Action.MoveRight:
+                    if (firemanPosition < Size - 1)
+                    {
+                        firemanPosition += 1;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case Action.GetWater:
                     if (world[firemanPosition] == Terrain.Water)
                     {
                         world[firemanPosition] = Terrain.GettingWater;
@@ -83,7 +105,7 @@ namespace Briefcase.Example.Bdi
                     }
                     return false;
 
-                case "drop-water":
+                case Action.ExtinguishFire:
                     if (world[firemanPosition] == Terrain.Fire)
                     {
                         world[firemanPosition] = Terrain.Normal;
@@ -96,29 +118,69 @@ namespace Briefcase.Example.Bdi
             }
         }
 
-        private void ChangeTerrain(Func<int, Terrain, Terrain> setter)
+        public override string Show()
+        {
+            const char horizontalBar = '─';
+            const char verticalBar = '|';
+
+            var ruler = new String(horizontalBar, 2 * Size + 1);
+
+            var agentArray = Enumerable.Range(0, Size).Select(p => p == firemanPosition ? "A" : " ");
+            var agentRow = $"|{String.Join(verticalBar.ToString(), agentArray)}|";
+
+            int? fireLocation = FireLocation;
+            var worldArray = Enumerable.Range(0, Size).Select(p => p == 0 ? "W" : (p == fireLocation ? "F" : " "));
+            var worldRow = $"|{String.Join(verticalBar.ToString(), worldArray)}|";
+
+            return new StringBuilder()
+                .AppendLine(ruler)
+                .AppendLine(agentRow)
+                .AppendLine(ruler)
+                .AppendLine(worldRow)
+                .AppendLine(ruler)
+                .ToString();
+        }
+
+        private void ModifyTerrain(Func<int, Terrain, Terrain> setter)
         {
             for (int i = 0; i < Size; i++)
                 world[i] = setter(i, world[i]);
+        }
+
+        // DEBUG
+        private void Print(string message)
+        {
+            Console.WriteLine(message);
+
+            Console.WriteLine($"Fireman: {firemanPosition}");
+
+            string fireLocation = FireLocation.HasValue ? FireLocation.Value.ToString() : "None";
+            Console.WriteLine($"Fire: {fireLocation}");
+
+            string ruler = new string('-', 100);
+            Console.WriteLine(ruler);
         }
     }
 
     public struct Percept
     {
-        public Terrain Left { get; internal set; }
+        public Percept(int position, Terrain[] visualField)
+        {
+            Position = position;
+            VisualField = visualField;
+        }
 
-        public Terrain Center { get; internal set; }
+        public int Position { get; internal set; }
 
-        public Terrain Right { get; internal set; }
+        public Terrain[] VisualField { get; internal set; }
     }
 
-    public struct Action
+    public enum Action
     {
-        // move, get-water, drop-water
-        public string Type { get; internal set; }
-
-        // left, right
-        public string Params { get; internal set; }
+        MoveLeft,
+        MoveRight,
+        GetWater,
+        ExtinguishFire
     }
 
     public enum Terrain

@@ -4,6 +4,8 @@ namespace Briefcase
 {
     public abstract class Environment : IEnvironment
     {
+        public IMultiagentSystem Mas { get; set; }
+
         public virtual void Initialize() {}
 
         // Turn-based

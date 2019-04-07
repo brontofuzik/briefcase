@@ -40,6 +40,7 @@ namespace Briefcase.Example.Bdi
         {
         }
 
+        // Shortcut
         private FireEnvironment FireEnvironment
             => Environment as FireEnvironment;
 
@@ -73,8 +74,11 @@ namespace Briefcase.Example.Bdi
                 if (Debug) Print($"Agent.Act - {nameof(MakePlan)}");
             }
 
-            ExecuteAction();
-            if (Debug) Print($"Agent.Act - {nameof(ExecuteAction)}");
+            if (plan.Any())
+            {
+                ExecuteAction();
+                if (Debug) Print($"Agent.Act - {nameof(ExecuteAction)}");
+            }
 
             if (Debug) Print("Agent.Act - end");
         }
@@ -240,6 +244,14 @@ namespace Briefcase.Example.Bdi
 
             string ruler = new string('-', 100);
             Console.WriteLine(ruler);
+        }
+
+        internal string Show()
+        {
+            const string noWater = "A";
+            const string withWater = "Å";
+
+            return beliefs[HaveWater] == True ? withWater : noWater; 
         }
     }
 }

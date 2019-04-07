@@ -31,14 +31,14 @@ namespace Briefcase.Example.Bdi
 
             // Start a fire!
             if (!FireLocation.HasValue)
-                world[random.Next(1, Size)] = Terrain.Fire;
+                world[random.Next(5, Size)] = Terrain.Fire;
 
             if (Debug) Print("Environment.BeginTurn - end");
         }
 
         public override void EndTurn(int turn)
         {
-            Print("EndTurn");
+            if (Debug) Print("EndTurn");
         }
 
         public Percept Perceive()
@@ -123,13 +123,20 @@ namespace Briefcase.Example.Bdi
             const char horizontalBar = '─';
             const char verticalBar = '|';
 
+            const string normal = " ";
+            const string fire = "▒";
+            const string water = "█";
+            const string gettingWater = "▄";
+
             var ruler = new String(horizontalBar, 2 * Size + 1);
 
-            var agentArray = Enumerable.Range(0, Size).Select(p => p == firemanPosition ? "A" : " ");
+            var agentArray = Enumerable.Range(0, Size).Select(p => p == firemanPosition ? FiremanAgent.Show() : normal);
             var agentRow = $"|{String.Join(verticalBar.ToString(), agentArray)}|";
 
-            int? fireLocation = FireLocation;
-            var worldArray = Enumerable.Range(0, Size).Select(p => p == 0 ? "W" : (p == fireLocation ? "F" : " "));
+            var worldArray = world.Select(t => t.Switch(normal,
+                (Terrain.Fire, fire),
+                (Terrain.Water, water),
+                (Terrain.GettingWater, gettingWater)));
             var worldRow = $"|{String.Join(verticalBar.ToString(), worldArray)}|";
 
             return new StringBuilder()
@@ -137,9 +144,12 @@ namespace Briefcase.Example.Bdi
                 .AppendLine(agentRow)
                 .AppendLine(ruler)
                 .AppendLine(worldRow)
-                .AppendLine(ruler)
+                .Append(ruler)
                 .ToString();
         }
+
+        // Shortcut
+        private FiremanAgent FiremanAgent => Mas.GetAllAgents().Single() as FiremanAgent;
 
         private void ModifyTerrain(Func<int, Terrain, Terrain> setter)
         {

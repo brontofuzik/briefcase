@@ -2,6 +2,8 @@
 {
     public interface IEnvironment
     {
+        IMultiagentSystem Mas { get; set; }
+
         void Initialize();
 
         // Turn-based

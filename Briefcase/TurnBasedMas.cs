@@ -1,58 +1,69 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
 
 namespace Briefcase
 {
-    public class TurnBasedMas
+    public class TurnBasedMas : MultiagentSystem
     {
-        private readonly IEnvironment environment;
-        private readonly IDictionary<string, IAgent> agents = new Dictionary<string, IAgent>();
-
         private readonly int? maxTurns;
         private int turn;
 
-        public TurnBasedMas(IEnvironment environment = null, int? maxTurns = null)
-        {
-            this.environment = environment;
-            this.maxTurns = maxTurns;
-        }
+        private readonly bool autoRun;
+        private readonly TimeSpan stepTime;
 
-        public void AddAgent(IAgent agent)
+        public TurnBasedMas(IEnvironment environment = null, int? maxTurns = null, bool autoRun = false, TimeSpan? stepTime = null)
+            : base(environment)
         {
-            agents[agent.Id] = agent;
-            agent.Environment = environment;
+            this.maxTurns = maxTurns;
+            this.autoRun = autoRun;
+            this.stepTime = stepTime ?? TimeSpan.FromSeconds(1);
         }
 
         public void Run()
         {
             Initialize();
 
-            Console.WriteLine(environment.Show());
+            ShowEnvironment();
+            Wait();
 
             while (!maxTurns.HasValue || turn < maxTurns)
             {
-                RunTurn(turn);
-                Console.WriteLine(environment.Show());
-                turn++;
+                RunTurn(turn++);
+                ShowEnvironment();
+                Wait();
             }
         }
 
         private void Initialize()
         {
-            environment.Initialize();
+            environment?.Initialize();
 
-            foreach (var agent in agents.Values)
+            foreach (var agent in GetAllAgents())
                 agent.Initialize();
+        }
+
+        private void Wait()
+        {
+            if (autoRun)
+                Thread.Sleep(stepTime);
+            else
+                Console.ReadKey();
         }
 
         private void RunTurn(int turn)
         {
-            environment.BeginTurn(turn);
+            environment?.BeginTurn(turn);
 
-            foreach (var agent in agents.Values)
+            foreach (var agent in GetAllAgents())
                 agent.Act();
 
-            environment.EndTurn(turn);
+            environment?.EndTurn(turn);
+        }
+
+        private void ShowEnvironment()
+        {
+            Console.Clear();
+            Console.WriteLine(environment.Show());
         }
     }
 }

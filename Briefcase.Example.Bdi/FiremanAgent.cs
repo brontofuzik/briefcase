@@ -33,7 +33,6 @@ namespace Briefcase.Example.Bdi
 
         private string intention = Empty;
         private readonly List<Action> plan = new List<Action>();
-        private bool needToReplan;
 
         public FiremanAgent(string name)
             : base(name)
@@ -54,8 +53,6 @@ namespace Briefcase.Example.Bdi
 
         public override void Act()
         {
-            if (Debug) Print("Agent.Act - beginning");
-
             var percept = FireEnvironment.Perceive();
 
             ReviseBeliefs(percept);
@@ -64,23 +61,16 @@ namespace Briefcase.Example.Bdi
             GenerateDesires();
             if (Debug) Print($"Agent.Act - {nameof(GenerateDesires)}");
 
-            AdoptIntetion();
-            if (Debug) Print($"Agent.Act - {nameof(AdoptIntetion)}");
+            AdoptIntention();
+            if (Debug) Print($"Agent.Act - {nameof(AdoptIntention)}");
 
-            // New intention adopted?
-            if (needToReplan)
+            // Act
+            var action = NextAction();
+            if (action.HasValue)
             {
-                MakePlan();
-                if (Debug) Print($"Agent.Act - {nameof(MakePlan)}");
-            }
-
-            if (plan.Any())
-            {
-                ExecuteAction();
+                ExecuteAction(action.Value);
                 if (Debug) Print($"Agent.Act - {nameof(ExecuteAction)}");
             }
-
-            if (Debug) Print("Agent.Act - end");
         }
 
         private void ReviseBeliefs(Percept percept)
@@ -115,7 +105,7 @@ namespace Briefcase.Example.Bdi
 
         private void GenerateDesires()
         {
-            // TODO Shouldn't this happen only after the intention check below?
+            // Where there is nothing else to do, patrol right.
             if (desires.Count == 0)
                 desires.Add(PatrolRight);
 
@@ -148,7 +138,7 @@ namespace Briefcase.Example.Bdi
             }
         }
 
-        private void AdoptIntetion()
+        private void AdoptIntention()
         {
             string newIntention = Empty;
 
@@ -162,7 +152,7 @@ namespace Briefcase.Example.Bdi
             if (newIntention != intention)
             {
                 intention = newIntention;
-                needToReplan = true;
+                MakePlan();
             }
         }
 
@@ -201,20 +191,24 @@ namespace Briefcase.Example.Bdi
                 default:
                     break;
             }
-
-            needToReplan = false;
         }
 
-        private void ExecuteAction()
+        private Action? NextAction()
         {
-            // TODO Why?
-            if (plan.Count == 0)
-                intention = Empty;
+            if (!plan.Any())
+                return null;
 
             var action = plan[0];
             plan.RemoveAt(0);
 
-            // TODO What to do with the action result?
+            if (!plan.Any())
+                intention = Empty;
+
+            return action;
+        }
+
+        private void ExecuteAction(Action action)
+        {
             var actionResult = FireEnvironment.Act(action);
 
             // Got water successfully?
@@ -223,7 +217,18 @@ namespace Briefcase.Example.Bdi
 
             // Extinguished water successfully?
             if (action == Action.ExtinguishFire && actionResult)
+            {
+                beliefs[Fire] = UnknownPosition;
                 beliefs[HaveWater] = False;
+            }
+        }
+
+        internal string Show()
+        {
+            const string noWater = "A";
+            const string withWater = "Å";
+
+            return beliefs[HaveWater] == True ? withWater : noWater; 
         }
 
         // DEBUG
@@ -244,14 +249,6 @@ namespace Briefcase.Example.Bdi
 
             string ruler = new string('-', 100);
             Console.WriteLine(ruler);
-        }
-
-        internal string Show()
-        {
-            const string noWater = "A";
-            const string withWater = "Å";
-
-            return beliefs[HaveWater] == True ? withWater : noWater; 
         }
     }
 }

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C86A612D-0DF4-4FE9-8659-6CAC4C9C2317}</ProjectGuid>
+    <ProjectGuid>{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Briefcase.Example.Bdi</RootNamespace>
-    <AssemblyName>Briefcase.Example.Bdi</AssemblyName>
+    <RootNamespace>Briefcase.Example.Prolog</RootNamespace>
+    <AssemblyName>Briefcase.Example.Prolog</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,8 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSProlog, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSProlog.6.0.0\lib\net35\CSProlog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,17 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Environment\Action.cs" />
-    <Compile Include="Environment\FireWorld.cs" />
-    <Compile Include="Environment\Percept.cs" />
-    <Compile Include="Fireman.cs" />
-    <Compile Include="Environment\RealTimeFireWorld.cs" />
-    <Compile Include="Environment\TurnBasedFireWorld.cs" />
+    <Compile Include="Hunter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WumpusWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Briefcase\Briefcase.csproj">

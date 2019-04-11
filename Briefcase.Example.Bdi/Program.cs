@@ -1,4 +1,6 @@
-﻿namespace Briefcase.Example.Bdi
+﻿using Briefcase.Example.Bdi.Environment;
+
+namespace Briefcase.Example.Bdi
 {
     class Program
     {
@@ -6,8 +8,20 @@
 
         static void Main(string[] args)
         {
-            var mas = new TurnBasedMas(new FireEnvironment());
-            mas.AddAgent(new FiremanAgent("sam"));
+            RunRealTime();
+        }
+
+        private static void RunTurnBased()
+        {
+            var mas = new TurnBasedMas(new TurnBasedFireWorld());
+            mas.AddAgent(new Fireman("sam"));
+            mas.Run();
+        }
+
+        private static void RunRealTime()
+        {
+            var mas = new RealTimeMas(new RealTimeFireWorld());
+            mas.AddAgent(new Fireman("sam"));
             mas.Run();
         }
     }

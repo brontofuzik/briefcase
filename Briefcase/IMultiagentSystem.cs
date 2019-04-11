@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Briefcase.Agents;
+using System.Collections.Generic;
 
 namespace Briefcase
 {

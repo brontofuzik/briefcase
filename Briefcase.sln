@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase", "Briefcase\Brie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Example.Bdi", "Briefcase.Example.Bdi\Briefcase.Example.Bdi.csproj", "{C86A612D-0DF4-4FE9-8659-6CAC4C9C2317}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Example.Prolog", "Briefcase.Example.Prolog\Briefcase.Example.Prolog.csproj", "{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C86A612D-0DF4-4FE9-8659-6CAC4C9C2317}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C86A612D-0DF4-4FE9-8659-6CAC4C9C2317}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C86A612D-0DF4-4FE9-8659-6CAC4C9C2317}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

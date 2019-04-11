@@ -41,12 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agent.cs" />
-    <Compile Include="Environment.cs" />
-    <Compile Include="IAgent.cs" />
-    <Compile Include="IEnvironment.cs" />
+    <Compile Include="Agents\Agent.cs" />
+    <Compile Include="Agents\RealTimeAgent.cs" />
+    <Compile Include="Environments\Environment.cs" />
+    <Compile Include="Environments\RealTimeEnvironment.cs" />
+    <Compile Include="Environments\TurnBasedEnvironment.cs" />
+    <Compile Include="Agents\IAgent.cs" />
+    <Compile Include="Environments\IEnvironment.cs" />
     <Compile Include="IMultiagentSystem.cs" />
     <Compile Include="MultiagentSystem.cs" />
+    <Compile Include="RealTimeMas.cs" />
     <Compile Include="TurnBasedMas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils.cs" />

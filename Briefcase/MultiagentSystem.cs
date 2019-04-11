@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Briefcase.Agents;
+using Briefcase.Environments;
+using System.Collections.Generic;
 
 namespace Briefcase
 {
@@ -11,6 +13,14 @@ namespace Briefcase
         {
             this.environment = environment;
             environment.Mas = this;
+        }
+
+        protected void Initialize()
+        {
+            environment?.Initialize();
+
+            foreach (var agent in GetAllAgents())
+                agent.Initialize();
         }
 
         public IAgent GetAgent(string id)

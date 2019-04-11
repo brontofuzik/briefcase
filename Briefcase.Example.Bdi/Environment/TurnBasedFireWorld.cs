@@ -3,9 +3,9 @@ using System;
 using System.Text;
 using System.Linq;
 
-namespace Briefcase.Example.Bdi
+namespace Briefcase.Example.Bdi.Environment
 {
-    class FireEnvironment : Environment
+    class TurnBasedFireWorld : Environments.TurnBasedEnvironment
     {
         public const int Size = 10;
 
@@ -44,7 +44,7 @@ namespace Briefcase.Example.Bdi
         public Percept Perceive()
         {
             // Left edge
-            if (firemanPosition == 0) 
+            if (firemanPosition == 0)
                 return new Percept(firemanPosition, new[]
                 {
                         Terrain.None,
@@ -53,7 +53,7 @@ namespace Briefcase.Example.Bdi
                 });
 
             // Right edge
-            else if (firemanPosition == Size - 1) 
+            else if (firemanPosition == Size - 1)
                 return new Percept(firemanPosition, new[]
                 {
                     world[firemanPosition - 1],
@@ -149,7 +149,7 @@ namespace Briefcase.Example.Bdi
         }
 
         // Shortcut
-        private FiremanAgent FiremanAgent => Mas.GetAllAgents().Single() as FiremanAgent;
+        private Fireman FiremanAgent => Mas.GetAllAgents().Single() as Fireman;
 
         private void ModifyTerrain(Func<int, Terrain, Terrain> setter)
         {
@@ -170,35 +170,5 @@ namespace Briefcase.Example.Bdi
             string ruler = new string('-', 100);
             Console.WriteLine(ruler);
         }
-    }
-
-    public struct Percept
-    {
-        public Percept(int position, Terrain[] visualField)
-        {
-            Position = position;
-            VisualField = visualField;
-        }
-
-        public int Position { get; internal set; }
-
-        public Terrain[] VisualField { get; internal set; }
-    }
-
-    public enum Action
-    {
-        MoveLeft,
-        MoveRight,
-        GetWater,
-        ExtinguishFire
-    }
-
-    public enum Terrain
-    {
-        Normal,
-        Fire,
-        Water,
-        GettingWater,
-        None
     }
 }

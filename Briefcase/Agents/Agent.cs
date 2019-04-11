@@ -1,4 +1,6 @@
-﻿namespace Briefcase
+﻿using Briefcase.Environments;
+
+namespace Briefcase.Agents
 {
     public abstract class Agent : IAgent
     {

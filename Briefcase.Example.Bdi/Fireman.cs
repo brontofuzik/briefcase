@@ -3,10 +3,12 @@ using static System.String;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Briefcase.Example.Bdi.Environment;
+using Action = Briefcase.Example.Bdi.Environment.Action;
 
 namespace Briefcase.Example.Bdi
 {
-    class FiremanAgent : Agent
+    class Fireman : Agents.Agent
     {
         // Beliefs
 
@@ -32,16 +34,16 @@ namespace Briefcase.Example.Bdi
         // Intentions & plans
 
         private string intention = Empty;
-        private readonly List<Action> plan = new List<Action>();
+        private readonly List<Environment.Action> plan = new List<Environment.Action>();
 
-        public FiremanAgent(string name)
+        public Fireman(string name)
             : base(name)
         {
         }
 
         // Shortcut
-        private FireEnvironment FireEnvironment
-            => Environment as FireEnvironment;
+        private TurnBasedFireWorld FireEnvironment
+            => Environment as TurnBasedFireWorld;
 
         public override void Initialize()
         {
@@ -105,16 +107,16 @@ namespace Briefcase.Example.Bdi
 
         private void GenerateDesires()
         {
+            // Plan to extinguish fire in progress?
+            if (intention == ExtinguishFire && plan.Count > 0)
+                return;
+
             // Where there is nothing else to do, patrol right.
             if (desires.Count == 0)
                 desires.Add(PatrolRight);
 
-            // Plan to extinguish fire in progress?
-            if (intention == ExtinguishFire && plan.Count > 0) 
-                return;
-
             // At right end, turn left.
-            if (beliefs[Position] == FireEnvironment.Size - 1) 
+            if (beliefs[Position] == TurnBasedFireWorld.Size - 1) 
             {
                 desires.Remove(PatrolRight);
                 desires.Add(PatrolLeft);
@@ -163,7 +165,7 @@ namespace Briefcase.Example.Bdi
             switch (intention)
             {
                 case PatrolRight:
-                    for (int i = beliefs[Position]; i < FireEnvironment.Size; i++)
+                    for (int i = beliefs[Position]; i < TurnBasedFireWorld.Size; i++)
                         plan.Add(Action.MoveRight);
                     break;
 
@@ -193,7 +195,7 @@ namespace Briefcase.Example.Bdi
             }
         }
 
-        private Action? NextAction()
+        private Environment.Action? NextAction()
         {
             if (!plan.Any())
                 return null;
@@ -207,7 +209,7 @@ namespace Briefcase.Example.Bdi
             return action;
         }
 
-        private void ExecuteAction(Action action)
+        private void ExecuteAction(Environment.Action action)
         {
             var actionResult = FireEnvironment.Act(action);
 

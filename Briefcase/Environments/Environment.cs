@@ -1,22 +1,12 @@
 ﻿using System;
 
-namespace Briefcase
+namespace Briefcase.Environments
 {
     public abstract class Environment : IEnvironment
     {
         public IMultiagentSystem Mas { get; set; }
 
         public virtual void Initialize() {}
-
-        // Turn-based
-        public virtual void BeginTurn(int turn)
-        {
-        }
-
-        // Turn-based
-        public virtual void EndTurn(int turn)
-        {
-        }
 
         public virtual string Show() => String.Empty;
     }

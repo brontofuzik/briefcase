@@ -9,8 +9,8 @@ namespace Briefcase.Example.Bdi
 
         static void Main(string[] args)
         {
-            RunTurnBased();
-            //RunRealTime();
+            //RunTurnBased();
+            RunRealTime();
         }
 
         private static void RunTurnBased()
@@ -23,7 +23,7 @@ namespace Briefcase.Example.Bdi
         private static void RunRealTime()
         {
             var mas = new RealTimeMas(new RealTimeFireWorld());
-            mas.AddAgent(new TurnBasedFireman("sam"));
+            mas.AddAgent(new RealTimeFireman("sam"));
             mas.Run();
         }
     }

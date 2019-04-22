@@ -16,7 +16,7 @@ namespace Briefcase
         public void Run()
         {
             Initialize();
-            RunAgents();
+            //RunAgents();
         }
 
         private void RunAgents()

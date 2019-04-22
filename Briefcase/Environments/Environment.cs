@@ -6,7 +6,7 @@ namespace Briefcase.Environments
     {
         public IMultiagentSystem Mas { get; set; }
 
-        public virtual void Initialize() {}
+        public abstract void Initialize();
 
         public virtual string Show() => String.Empty;
     }

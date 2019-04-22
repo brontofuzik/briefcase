@@ -10,7 +10,10 @@ namespace Briefcase.Agents
         protected RealTimeAgent(string name)
             : base(name)
         {
-            thread = new Thread(Loop);          
+            thread = new Thread(Loop)
+            {
+                Name = $"RealTimeAgent_{name}"
+            };          
         }
 
         private async void Loop()

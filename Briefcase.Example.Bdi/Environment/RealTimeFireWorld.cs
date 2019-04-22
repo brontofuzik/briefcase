@@ -16,6 +16,11 @@ namespace Briefcase.Example.Bdi.Environment
             fireWorld = new ActiveFireWorld(dispatcher);
         }
 
+        public override void Initialize()
+        {
+            fireWorld.InitializeAsync().GetAwaiter().GetResult();
+        }
+
         public Task<FireWorldPercept> Perceive()
             => fireWorld.PerceiveAsync();
 

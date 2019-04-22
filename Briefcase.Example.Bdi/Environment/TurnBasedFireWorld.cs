@@ -1,174 +1,52 @@
-﻿using static Briefcase.Example.Bdi.Program;
-using System;
-using System.Text;
+﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Briefcase.Example.Bdi.Environment
 {
     class TurnBasedFireWorld : Environments.TurnBasedEnvironment
     {
-        public const int Size = 10;
-
-        private readonly Random random = new Random();
-
-        private readonly Terrain[] world = new Terrain[Size];
-        private int firemanPosition;
-
-        private int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
-
-        public override void Initialize()
-        {
-            ModifyTerrain((i, _) => i == 0 ? Terrain.Water : Terrain.Normal);
-            firemanPosition = 0;
-        }
-
-        public override void BeginTurn(int turn)
-        {
-            if (Debug) Print("Environment.BeginTurn - beginning");
-
-            // Reset water
-            ModifyTerrain((_, t) => t == Terrain.GettingWater ? Terrain.Water : t);
-
-            // Start a fire!
-            if (!FireLocation.HasValue)
-                world[random.Next(5, Size)] = Terrain.Fire;
-
-            if (Debug) Print("Environment.BeginTurn - end");
-        }
-
-        public override void EndTurn(int turn)
-        {
-            if (Debug) Print("EndTurn");
-        }
-
-        public Percept Perceive()
-        {
-            // Left edge
-            if (firemanPosition == 0)
-                return new Percept(firemanPosition, new[]
-                {
-                        Terrain.None,
-                        world[firemanPosition],
-                        world[firemanPosition + 1]
-                });
-
-            // Right edge
-            else if (firemanPosition == Size - 1)
-                return new Percept(firemanPosition, new[]
-                {
-                    world[firemanPosition - 1],
-                    world[firemanPosition],
-                    Terrain.None
-                });
-
-            // Middle
-            else
-                return new Percept(firemanPosition, new[]
-                {
-                    world[firemanPosition - 1],
-                    world[firemanPosition],
-                    world[firemanPosition + 1]
-                });
-        }
-
-        public bool Act(Action action)
-        {
-            switch (action)
-            {
-                case Action.MoveLeft:
-                    if (firemanPosition > 0)
-                    {
-                        firemanPosition -= 1;
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                case Action.MoveRight:
-                    if (firemanPosition < Size - 1)
-                    {
-                        firemanPosition += 1;
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                case Action.GetWater:
-                    if (world[firemanPosition] == Terrain.Water)
-                    {
-                        world[firemanPosition] = Terrain.GettingWater;
-                        return true; // Message: got-water
-                    }
-                    return false;
-
-                case Action.ExtinguishFire:
-                    if (world[firemanPosition] == Terrain.Fire)
-                    {
-                        world[firemanPosition] = Terrain.Normal;
-                        return true; // Message: fire-out
-                    }
-                    return false;
-
-                default:
-                    return false;
-            }
-        }
-
-        public override string Show()
-        {
-            const char horizontalBar = '─';
-            const char verticalBar = '|';
-
-            const string normal = " ";
-            const string fire = "▒";
-            const string water = "█";
-            const string gettingWater = "▄";
-
-            var ruler = new String(horizontalBar, 2 * Size + 1);
-
-            var agentArray = Enumerable.Range(0, Size).Select(p => p == firemanPosition ? FiremanAgent.Show() : normal);
-            var agentRow = $"|{String.Join(verticalBar.ToString(), agentArray)}|";
-
-            var worldArray = world.Select(t => t.Switch(normal,
-                (Terrain.Fire, fire),
-                (Terrain.Water, water),
-                (Terrain.GettingWater, gettingWater)));
-            var worldRow = $"|{String.Join(verticalBar.ToString(), worldArray)}|";
-
-            return new StringBuilder()
-                .AppendLine(ruler)
-                .AppendLine(agentRow)
-                .AppendLine(ruler)
-                .AppendLine(worldRow)
-                .Append(ruler)
-                .ToString();
-        }
+        private readonly FireWorld fireWorld = new FireWorld();
 
         // Shortcut
         private Fireman FiremanAgent => Mas.GetAllAgents().Single() as Fireman;
 
-        private void ModifyTerrain(Func<int, Terrain, Terrain> setter)
+        public override void Initialize()
         {
-            for (int i = 0; i < Size; i++)
-                world[i] = setter(i, world[i]);
+            fireWorld.Initialize();
         }
 
-        // DEBUG
-        private void Print(string message)
+        public override void BeginTurn(int turn)
         {
-            Console.WriteLine(message);
+            Debug("Beginning turn");
 
-            Console.WriteLine($"Fireman: {firemanPosition}");
+            fireWorld.ResetWater();
+            fireWorld.StartFire();
 
-            string fireLocation = FireLocation.HasValue ? FireLocation.Value.ToString() : "None";
-            Console.WriteLine($"Fire: {fireLocation}");
+            Debug("Began turn");
+        }
 
-            string ruler = new string('-', 100);
-            Console.WriteLine(ruler);
+        public override void EndTurn(int turn)
+        {
+            Debug("Ending turn");
+        }
+
+        public Percept Perceive() => fireWorld.Perceive();
+
+        public bool Act(Action action) => fireWorld.Act(action);
+
+        public override string Show() => fireWorld.Show(FiremanAgent.Show());
+
+        private void Debug(string message, [CallerMemberName] string method = null)
+        {
+            if (Program.Debug)
+            {
+                lock (Console.Out)
+                {
+                    Console.WriteLine($"{nameof(TurnBasedFireWorld)}.{method}:");
+                    Console.WriteLine(fireWorld.Print());
+                }
+            }
         }
     }
 }

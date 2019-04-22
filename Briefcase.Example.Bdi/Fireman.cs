@@ -116,7 +116,7 @@ namespace Briefcase.Example.Bdi
                 desires.Add(PatrolRight);
 
             // At right end, turn left.
-            if (beliefs[Position] == TurnBasedFireWorld.Size - 1) 
+            if (beliefs[Position] == FireWorld.Size - 1) 
             {
                 desires.Remove(PatrolRight);
                 desires.Add(PatrolLeft);
@@ -165,7 +165,7 @@ namespace Briefcase.Example.Bdi
             switch (intention)
             {
                 case PatrolRight:
-                    for (int i = beliefs[Position]; i < TurnBasedFireWorld.Size; i++)
+                    for (int i = beliefs[Position]; i < FireWorld.Size; i++)
                         plan.Add(Action.MoveRight);
                     break;
 

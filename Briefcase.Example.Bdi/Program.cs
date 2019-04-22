@@ -8,7 +8,7 @@ namespace Briefcase.Example.Bdi
 
         static void Main(string[] args)
         {
-            RunRealTime();
+            RunTurnBased();
         }
 
         private static void RunTurnBased()

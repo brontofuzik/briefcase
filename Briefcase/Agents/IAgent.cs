@@ -9,7 +9,5 @@ namespace Briefcase.Agents
         IEnvironment Environment { get; set; }
 
         void Initialize();
-
-        void Act();
     }
 }

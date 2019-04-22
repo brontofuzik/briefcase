@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Briefcase.Example.Bdi.Agents;
 
 namespace Briefcase.Example.Bdi.Environment
 {
@@ -9,7 +10,7 @@ namespace Briefcase.Example.Bdi.Environment
         private readonly FireWorld fireWorld = new FireWorld();
 
         // Shortcut
-        private Fireman FiremanAgent => Mas.GetAllAgents().Single() as Fireman;
+        private TurnBasedFireman FiremanAgent => Mas.GetAllAgents().Single() as TurnBasedFireman;
 
         public override void Initialize()
         {

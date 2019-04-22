@@ -1,14 +1,12 @@
-﻿using static Briefcase.Example.Bdi.Program;
-using static System.String;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
+using Briefcase.Agents;
 using Briefcase.Example.Bdi.Environment;
-using FireWorldAction = Briefcase.Example.Bdi.Environment.FireWorldAction;
 
-namespace Briefcase.Example.Bdi
+namespace Briefcase.Example.Bdi.Agents
 {
-    class Fireman : Agents.Agent
+    class TurnBasedFireman : TurnBasedAgent
     {
         // Beliefs
 
@@ -33,10 +31,10 @@ namespace Briefcase.Example.Bdi
 
         // Intentions & plans
 
-        private string intention = Empty;
-        private readonly List<Environment.FireWorldAction> plan = new List<Environment.FireWorldAction>();
+        private string intention = String.Empty;
+        private readonly List<FireWorldAction> plan = new List<Environment.FireWorldAction>();
 
-        public Fireman(string name)
+        public TurnBasedFireman(string name)
             : base(name)
         {
         }
@@ -58,20 +56,20 @@ namespace Briefcase.Example.Bdi
             var percept = FireEnvironment.Perceive();
 
             ReviseBeliefs(percept);
-            if (Debug) Print($"Agent.Act - {nameof(ReviseBeliefs)}");
+            if (Program.Debug) Print($"Agent.Act - {nameof(ReviseBeliefs)}");
 
             GenerateDesires();
-            if (Debug) Print($"Agent.Act - {nameof(GenerateDesires)}");
+            if (Program.Debug) Print($"Agent.Act - {nameof(GenerateDesires)}");
 
             AdoptIntention();
-            if (Debug) Print($"Agent.Act - {nameof(AdoptIntention)}");
+            if (Program.Debug) Print($"Agent.Act - {nameof(AdoptIntention)}");
 
             // Act
             var action = NextAction();
             if (action.HasValue)
             {
                 ExecuteAction(action.Value);
-                if (Debug) Print($"Agent.Act - {nameof(ExecuteAction)}");
+                if (Program.Debug) Print($"Agent.Act - {nameof(ExecuteAction)}");
             }
         }
 
@@ -142,7 +140,7 @@ namespace Briefcase.Example.Bdi
 
         private void AdoptIntention()
         {
-            string newIntention = Empty;
+            string newIntention = String.Empty;
 
             if (desires.Contains(ExtinguishFire))
                 newIntention = ExtinguishFire;
@@ -204,7 +202,7 @@ namespace Briefcase.Example.Bdi
             plan.RemoveAt(0);
 
             if (!plan.Any())
-                intention = Empty;
+                intention = String.Empty;
 
             return action;
         }

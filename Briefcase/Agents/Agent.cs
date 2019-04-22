@@ -6,7 +6,7 @@ namespace Briefcase.Agents
     {
         private readonly string name;
 
-        public Agent(string name)
+        protected Agent(string name)
         {
             this.name = name;
         }
@@ -16,7 +16,5 @@ namespace Briefcase.Agents
         public IEnvironment Environment { get; set; }
 
         public virtual void Initialize() {}
-
-        public abstract void Act();
     }
 }

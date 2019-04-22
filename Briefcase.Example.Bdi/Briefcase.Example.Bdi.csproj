@@ -43,11 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agents\RealTimeFireman.cs" />
     <Compile Include="Environment\ActiveFireWorld.cs" />
     <Compile Include="Environment\FireWorldAction.cs" />
     <Compile Include="Environment\FireWorld.cs" />
     <Compile Include="Environment\FireWorldPercept.cs" />
-    <Compile Include="Fireman.cs" />
+    <Compile Include="Agents\TurnBasedFireman.cs" />
     <Compile Include="Environment\RealTimeFireWorld.cs" />
     <Compile Include="Environment\TurnBasedFireWorld.cs" />
     <Compile Include="Program.cs" />

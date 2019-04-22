@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Briefcase.Agents
 {
@@ -6,21 +7,21 @@ namespace Briefcase.Agents
     {
         private readonly Thread thread;
 
-        public RealTimeAgent(string name)
+        protected RealTimeAgent(string name)
             : base(name)
         {
-            thread = new Thread(Loop);
-            
+            thread = new Thread(Loop);          
         }
 
-        private void Loop()
+        private async void Loop()
         {
             while (true)
             {
-                Act();
-                Thread.Sleep(1000);
+                await Act();
             }
         }
+
+        protected abstract Task Act();
 
         public void Run()
         {

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\RealTimeAgent.cs" />
+    <Compile Include="Agents\TurnBasedAgent.cs" />
     <Compile Include="Environments\Environment.cs" />
     <Compile Include="Environments\RealTimeEnvironment.cs" />
     <Compile Include="Environments\TurnBasedEnvironment.cs" />

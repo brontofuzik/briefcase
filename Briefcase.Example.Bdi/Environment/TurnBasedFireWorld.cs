@@ -31,9 +31,9 @@ namespace Briefcase.Example.Bdi.Environment
             Debug("Ending turn");
         }
 
-        public Percept Perceive() => fireWorld.Perceive();
+        public FireWorldPercept Perceive() => fireWorld.Perceive();
 
-        public bool Act(Action action) => fireWorld.Act(action);
+        public bool Act(FireWorldAction action) => fireWorld.Act(action);
 
         public override string Show() => fireWorld.Show(FiremanAgent.Show());
 

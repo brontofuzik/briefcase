@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Example.Bdi", "Br
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Example.Prolog", "Briefcase.Example.Prolog\Briefcase.Example.Prolog.csproj", "{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.ActiveObject", "..\briefcase-active\Briefcase.ActiveObject\Briefcase.ActiveObject.csproj", "{19CF70B1-9623-4A4C-9A92-D04BB52BD741}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

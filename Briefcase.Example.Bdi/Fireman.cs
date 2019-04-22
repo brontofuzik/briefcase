@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Briefcase.Example.Bdi.Environment;
-using Action = Briefcase.Example.Bdi.Environment.Action;
+using FireWorldAction = Briefcase.Example.Bdi.Environment.FireWorldAction;
 
 namespace Briefcase.Example.Bdi
 {
@@ -34,7 +34,7 @@ namespace Briefcase.Example.Bdi
         // Intentions & plans
 
         private string intention = Empty;
-        private readonly List<Environment.Action> plan = new List<Environment.Action>();
+        private readonly List<Environment.FireWorldAction> plan = new List<Environment.FireWorldAction>();
 
         public Fireman(string name)
             : base(name)
@@ -75,7 +75,7 @@ namespace Briefcase.Example.Bdi
             }
         }
 
-        private void ReviseBeliefs(Percept percept)
+        private void ReviseBeliefs(FireWorldPercept percept)
         {
             beliefs[Position] = percept.Position;
 
@@ -166,28 +166,28 @@ namespace Briefcase.Example.Bdi
             {
                 case PatrolRight:
                     for (int i = beliefs[Position]; i < FireWorld.Size; i++)
-                        plan.Add(Action.MoveRight);
+                        plan.Add(FireWorldAction.MoveRight);
                     break;
 
                 case PatrolLeft:
                     for (int i = beliefs[Position]; i >= 0; i--)
-                        plan.Add(Action.MoveLeft);
+                        plan.Add(FireWorldAction.MoveLeft);
                     break;
 
                 case ExtinguishFire:
                     // Move to water (left)
                     for (int i = beliefs[Position]; i > beliefs[Water]; i--)
-                        plan.Add(Action.MoveLeft);
+                        plan.Add(FireWorldAction.MoveLeft);
 
                     // Get water
-                    plan.Add(Action.GetWater);
+                    plan.Add(FireWorldAction.GetWater);
 
                     // Move to fire (right)
                     for (int i = beliefs[Water]; i < beliefs[Fire]; i++)
-                        plan.Add(Action.MoveRight);
+                        plan.Add(FireWorldAction.MoveRight);
 
                     // Extinguish fire
-                    plan.Add(Action.ExtinguishFire);
+                    plan.Add(FireWorldAction.ExtinguishFire);
                     break;
 
                 default:
@@ -195,7 +195,7 @@ namespace Briefcase.Example.Bdi
             }
         }
 
-        private Environment.Action? NextAction()
+        private Environment.FireWorldAction? NextAction()
         {
             if (!plan.Any())
                 return null;
@@ -209,16 +209,16 @@ namespace Briefcase.Example.Bdi
             return action;
         }
 
-        private void ExecuteAction(Environment.Action action)
+        private void ExecuteAction(Environment.FireWorldAction action)
         {
             var actionResult = FireEnvironment.Act(action);
 
             // Got water successfully?
-            if (action == Action.GetWater && actionResult)
+            if (action == FireWorldAction.GetWater && actionResult)
                 beliefs[HaveWater] = True;
 
             // Extinguished water successfully?
-            if (action == Action.ExtinguishFire && actionResult)
+            if (action == FireWorldAction.ExtinguishFire && actionResult)
             {
                 beliefs[Fire] = UnknownPosition;
                 beliefs[HaveWater] = False;

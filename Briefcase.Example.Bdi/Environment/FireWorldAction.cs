@@ -1,6 +1,6 @@
 ﻿namespace Briefcase.Example.Bdi.Environment
 {
-    public enum Action
+    public enum FireWorldAction
     {
         MoveLeft,
         MoveRight,

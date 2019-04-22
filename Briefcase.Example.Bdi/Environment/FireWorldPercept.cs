@@ -1,8 +1,8 @@
 ﻿namespace Briefcase.Example.Bdi.Environment
 {
-    public struct Percept
+    public struct FireWorldPercept
     {
-        public Percept(int position, Terrain[] visualField)
+        public FireWorldPercept(int position, Terrain[] visualField)
         {
             Position = position;
             VisualField = visualField;

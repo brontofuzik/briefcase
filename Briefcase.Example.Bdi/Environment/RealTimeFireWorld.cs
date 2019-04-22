@@ -1,19 +1,25 @@
 ﻿using Briefcase.Environments;
 using System.Threading.Tasks;
+using Briefcase.ActiveObject;
+using Briefcase.ActiveObject.Dispatcher;
 
 namespace Briefcase.Example.Bdi.Environment
 {
     class RealTimeFireWorld : RealTimeEnvironment
     {
-        public Task<bool> Act(Action action)
+        private readonly IDispatcher dispatcher;
+        private readonly ActiveFireWorld fireWorld;
+
+        public RealTimeFireWorld()
         {
-            Enqueue(action);
-            return Task.FromResult(true); // TODO
+            dispatcher = new Dispatcher_NEW();
+            fireWorld = new ActiveFireWorld(dispatcher);
         }
 
-        protected override void Handle(object action)
-        {
-            throw new System.NotImplementedException();
-        }
+        public Task<FireWorldPercept> Perceive()
+            => fireWorld.PerceiveAsync();
+
+        public Task<bool> Act(FireWorldAction action)
+            => fireWorld.ActAsync(action);
     }
 }

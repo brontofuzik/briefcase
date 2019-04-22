@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Briefcase.ActiveObject;
+using Briefcase.ActiveObject.Attributes;
+using Briefcase.ActiveObject.Operations;
 
 namespace Briefcase.Example.Bdi.Environment
 {
+    [ActiveObject]
     class FireWorld
     {
         public const int Size = 10;
@@ -16,30 +20,43 @@ namespace Briefcase.Example.Bdi.Environment
         // Shortcut
         public int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
 
-        public void Initialize()
+        [Operation(OperationPriority.Highest, typeof(Operation<int>), nameof(Allow))]
+        public int Initialize()
         {
             // Water at location 0.
             SetTerrain((i, _) => i == 0 ? Terrain.Water : Terrain.Normal);
             firemanPosition = 0;
+
+            // Active object
+            return 0;
         }
 
-        public void ResetWater()
+        [Operation(OperationPriority.Highest, typeof(Operation<int>), nameof(Allow))]
+        public int ResetWater()
         {
             // Change getting-water to water.
             SetTerrain((_, t) => t == Terrain.GettingWater ? Terrain.Water : t);
+
+            // Active object
+            return 0;
         }
 
-        public void StartFire()
+        [Operation(OperationPriority.Highest, typeof(Operation<int>), nameof(Allow))]
+        public int StartFire()
         {
             if (!FireLocation.HasValue)
                 world[random.Next(5, Size)] = Terrain.Fire;
+
+            // Active object
+            return 0;
         }
 
-        public Percept Perceive()
+        [Operation(OperationPriority.Normal, typeof(Operation<FireWorldPercept>), nameof(Allow))]
+        public FireWorldPercept Perceive()
         {
             // Left edge
             if (firemanPosition == 0)
-                return new Percept(firemanPosition, new[]
+                return new FireWorldPercept(firemanPosition, new[]
                 {
                         Terrain.None,
                         world[firemanPosition],
@@ -48,7 +65,7 @@ namespace Briefcase.Example.Bdi.Environment
 
             // Right edge
             else if (firemanPosition == Size - 1)
-                return new Percept(firemanPosition, new[]
+                return new FireWorldPercept(firemanPosition, new[]
                 {
                     world[firemanPosition - 1],
                     world[firemanPosition],
@@ -57,7 +74,7 @@ namespace Briefcase.Example.Bdi.Environment
 
             // Middle
             else
-                return new Percept(firemanPosition, new[]
+                return new FireWorldPercept(firemanPosition, new[]
                 {
                     world[firemanPosition - 1],
                     world[firemanPosition],
@@ -65,11 +82,12 @@ namespace Briefcase.Example.Bdi.Environment
                 });
         }
 
-        public bool Act(Action action)
+        [Operation(OperationPriority.Normal, typeof(Operation<bool>), nameof(Allow))]
+        public bool Act(FireWorldAction action)
         {
             switch (action)
             {
-                case Action.MoveLeft:
+                case FireWorldAction.MoveLeft:
                     if (firemanPosition > 0)
                     {
                         firemanPosition -= 1;
@@ -80,7 +98,7 @@ namespace Briefcase.Example.Bdi.Environment
                         return false;
                     }
 
-                case Action.MoveRight:
+                case FireWorldAction.MoveRight:
                     if (firemanPosition < Size - 1)
                     {
                         firemanPosition += 1;
@@ -91,7 +109,7 @@ namespace Briefcase.Example.Bdi.Environment
                         return false;
                     }
 
-                case Action.GetWater:
+                case FireWorldAction.GetWater:
                     if (world[firemanPosition] == Terrain.Water)
                     {
                         world[firemanPosition] = Terrain.GettingWater;
@@ -99,7 +117,7 @@ namespace Briefcase.Example.Bdi.Environment
                     }
                     return false;
 
-                case Action.ExtinguishFire:
+                case FireWorldAction.ExtinguishFire:
                     if (world[firemanPosition] == Terrain.Fire)
                     {
                         world[firemanPosition] = Terrain.Normal;
@@ -119,6 +137,7 @@ namespace Briefcase.Example.Bdi.Environment
                 world[i] = setter(i, world[i]);
         }
 
+        [Operation(OperationPriority.Highest, typeof(Operation<string>), nameof(Allow))]
         internal string Show(string firemanShow)
         {
             const char horizontalBar = '─';
@@ -161,6 +180,9 @@ namespace Briefcase.Example.Bdi.Environment
 
             return sb.ToString();
         }
+
+        // Active object
+        private bool Allow() => true;
     }
 
     public enum Terrain

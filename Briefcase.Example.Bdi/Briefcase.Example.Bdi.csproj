@@ -43,9 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Environment\Action.cs" />
+    <Compile Include="Environment\ActiveFireWorld.cs" />
+    <Compile Include="Environment\FireWorldAction.cs" />
     <Compile Include="Environment\FireWorld.cs" />
-    <Compile Include="Environment\Percept.cs" />
+    <Compile Include="Environment\FireWorldPercept.cs" />
     <Compile Include="Fireman.cs" />
     <Compile Include="Environment\RealTimeFireWorld.cs" />
     <Compile Include="Environment\TurnBasedFireWorld.cs" />
@@ -56,6 +57,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\briefcase-active\Briefcase.ActiveObject\Briefcase.ActiveObject.csproj">
+      <Project>{19cf70b1-9623-4a4c-9a92-d04bb52bd741}</Project>
+      <Name>Briefcase.ActiveObject</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Briefcase\Briefcase.csproj">
       <Project>{89bf90e4-77e5-4a37-8f76-43c6d956e33c}</Project>
       <Name>Briefcase</Name>

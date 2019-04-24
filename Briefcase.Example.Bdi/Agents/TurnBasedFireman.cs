@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Briefcase.Agents;
 using Briefcase.Example.Bdi.Environment;
+using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi.Agents
 {

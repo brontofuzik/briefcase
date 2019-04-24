@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Briefcase.ActiveObject;
-using Briefcase.ActiveObject.Attributes;
-using Briefcase.ActiveObject.Operations;
+using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi.Environment
 {
-    [ActiveObject]
     class FireWorld
     {
         public const int Size = 10;
@@ -20,38 +17,25 @@ namespace Briefcase.Example.Bdi.Environment
         // Shortcut
         public int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
 
-        [Operation(OperationPriority.Highest, typeof(Operation<int>), nameof(Allow))]
-        public int Initialize()
+        public void Initialize()
         {
             // Water at location 0.
             SetTerrain((i, _) => i == 0 ? Terrain.Water : Terrain.Normal);
             firemanPosition = 0;
-
-            // Active object
-            return 0;
         }
 
-        [Operation(OperationPriority.Highest, typeof(Operation<int>), nameof(Allow))]
-        public int ResetWater()
+        public void ResetWater()
         {
             // Change getting-water to water.
             SetTerrain((_, t) => t == Terrain.GettingWater ? Terrain.Water : t);
-
-            // Active object
-            return 0;
         }
 
-        [Operation(OperationPriority.Highest, typeof(Operation<int>), nameof(Allow))]
-        public int StartFire()
+        public void StartFire()
         {
             if (!FireLocation.HasValue)
                 world[random.Next(5, Size)] = Terrain.Fire;
-
-            // Active object
-            return 0;
         }
 
-        [Operation(OperationPriority.Normal, typeof(Operation<FireWorldPercept>), nameof(Allow))]
         public FireWorldPercept Perceive()
         {
             // Left edge
@@ -82,7 +66,6 @@ namespace Briefcase.Example.Bdi.Environment
                 });
         }
 
-        [Operation(OperationPriority.Normal, typeof(Operation<bool>), nameof(Allow))]
         public bool Act(FireWorldAction action)
         {
             switch (action)
@@ -137,7 +120,6 @@ namespace Briefcase.Example.Bdi.Environment
                 world[i] = setter(i, world[i]);
         }
 
-        [Operation(OperationPriority.Highest, typeof(Operation<string>), nameof(Allow))]
         internal string Show(string firemanShow)
         {
             const char horizontalBar = '─';

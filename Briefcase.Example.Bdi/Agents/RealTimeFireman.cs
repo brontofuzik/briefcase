@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Briefcase.Agents;
 using Briefcase.Example.Bdi.Environment;
+using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi.Agents
 {

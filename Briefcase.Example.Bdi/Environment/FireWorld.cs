@@ -14,6 +14,8 @@ namespace Briefcase.Example.Bdi.Environment
         private readonly Terrain[] world = new Terrain[Size];
         private int firemanPosition;
 
+        public event EventHandler AgentActed;
+
         // Shortcut
         public int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
 
@@ -68,49 +70,65 @@ namespace Briefcase.Example.Bdi.Environment
 
         public bool Act(FireWorldAction action)
         {
+            bool result;
             switch (action)
             {
                 case FireWorldAction.MoveLeft:
                     if (firemanPosition > 0)
                     {
                         firemanPosition -= 1;
-                        return true;
+                        result = true;
                     }
                     else
                     {
-                        return false;
+                        result = false;
                     }
+                    break;
 
                 case FireWorldAction.MoveRight:
                     if (firemanPosition < Size - 1)
                     {
                         firemanPosition += 1;
-                        return true;
+                        result = true;
                     }
                     else
                     {
-                        return false;
+                        result = false;
                     }
+                    break;
 
                 case FireWorldAction.GetWater:
                     if (world[firemanPosition] == Terrain.Water)
                     {
                         world[firemanPosition] = Terrain.GettingWater;
-                        return true; // Message: got-water
+                        result = true;
                     }
-                    return false;
+                    else
+                    {
+                        result = false;
+                    }
+                    break;
 
                 case FireWorldAction.ExtinguishFire:
                     if (world[firemanPosition] == Terrain.Fire)
                     {
                         world[firemanPosition] = Terrain.Normal;
-                        return true; // Message: fire-out
+                        result = true; // Message: fire-out
                     }
-                    return false;
+                    else
+                    {
+                        result = false;
+                    }
+                    break;
 
                 default:
-                    return false;
+                    result = false;
+                    break;
             }
+
+            AgentActed?.Invoke(this, new EventArgs());
+
+            return result;
         }
 
         // No lock on terrain is necessary!
@@ -162,9 +180,6 @@ namespace Briefcase.Example.Bdi.Environment
 
             return sb.ToString();
         }
-
-        // Active object
-        private bool Allow() => true;
     }
 
     public enum Terrain

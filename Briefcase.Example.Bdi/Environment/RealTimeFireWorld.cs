@@ -1,31 +1,54 @@
-﻿using Briefcase.Environments;
+﻿using System;
+using System.Linq;
+using Briefcase.Environments;
 using System.Threading.Tasks;
 using Briefcase.ActiveObject;
+using Briefcase.Example.Bdi.Agents;
 using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi.Environment
 {
     class RealTimeFireWorld : RealTimeEnvironment
     {
-        private readonly ActiveFireWorld fireWorld;
+        private readonly FireWorld passive;
+        private readonly ActiveFireWorld active;
 
         public RealTimeFireWorld()
         {
-            fireWorld = new ActiveFireWorld(new FireWorld());
+            passive = new FireWorld();
+            active = new ActiveFireWorld(passive);
+            passive.AgentActed += AgentActed;
         }
+
+        private void AgentActed(object sender, EventArgs e)
+        {
+            passive.ResetWater();
+            passive.StartFire();
+            ShowEnvironment();
+        }
+
+        private void ShowEnvironment()
+        {
+            Console.Clear();
+            Console.WriteLine(passive.Show(FiremanAgent.Show()));
+        }
+
+        // Shortcut
+        private RealTimeFireman FiremanAgent => Mas.GetAllAgents().Single() as RealTimeFireman;
 
         public override void Initialize()
         {
-            fireWorld.InitializeAsync().Await();
+            active.InitializeAsync().Await();
         }
 
         public Task<FireWorldPercept> Perceive()
-            => fireWorld.PerceiveAsync();
+            => active.PerceiveAsync();
 
         public Task<bool> Act(FireWorldAction action)
-            => fireWorld.ActAsync(action);
+            => active.ActAsync(action);
     }
 
+    // Proxy
     class ActiveFireWorld : ActiveObject<FireWorld>
     {
         public ActiveFireWorld(FireWorld passive)

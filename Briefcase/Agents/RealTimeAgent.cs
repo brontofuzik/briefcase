@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Briefcase.Agents
@@ -21,6 +22,7 @@ namespace Briefcase.Agents
             while (true)
             {
                 await Act();
+                await Task.Delay(TimeSpan.FromSeconds(1));
             }
         }
 

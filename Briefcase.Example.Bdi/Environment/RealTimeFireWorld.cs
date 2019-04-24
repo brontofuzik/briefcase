@@ -14,8 +14,7 @@ namespace Briefcase.Example.Bdi.Environment
 
         public RealTimeFireWorld()
         {
-            var passive = new FireWorld();
-            active = new ActiveFireWorld(passive);
+            active = new ActiveFireWorld(new FireWorld());
             active.Passive.AfterAct += AfterAct;
         }
 

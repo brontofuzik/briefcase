@@ -10,27 +10,26 @@ namespace Briefcase.Example.Bdi.Environment
 {
     class RealTimeFireWorld : RealTimeEnvironment
     {
-        private readonly FireWorld passive;
         private readonly ActiveFireWorld active;
 
         public RealTimeFireWorld()
         {
-            passive = new FireWorld();
+            var passive = new FireWorld();
             active = new ActiveFireWorld(passive);
-            passive.AgentActed += AgentActed;
+            active.Passive.AfterAct += AfterAct;
         }
 
-        private void AgentActed(object sender, EventArgs e)
+        private void AfterAct(object sender, EventArgs e)
         {
-            passive.ResetWater();
-            passive.StartFire();
+            active.Passive.ResetWater();
+            active.Passive.StartFire();
             ShowEnvironment();
         }
 
         private void ShowEnvironment()
         {
             Console.Clear();
-            Console.WriteLine(passive.Show(FiremanAgent.Show()));
+            Console.WriteLine(active.Passive.Show(FiremanAgent.Show()));
         }
 
         // Shortcut
@@ -59,23 +58,23 @@ namespace Briefcase.Example.Bdi.Environment
         #region Internal
 
         public Task InitializeAsync()
-            => CallAction(() => obj.Initialize());
+            => CallAction(() => Passive.Initialize());
 
         public Task ResetWaterAsync()
-            => CallAction(() => obj.ResetWater());
+            => CallAction(() => Passive.ResetWater());
 
         public Task StartFireAsync()
-            => CallAction(() => obj.StartFire());
+            => CallAction(() => Passive.StartFire());
 
         #endregion // Internal
 
         #region Sense & act
 
         public Task<FireWorldPercept> PerceiveAsync()
-            => CallFunction2(() => obj.Perceive());
+            => CallFunction2(() => Passive.Perceive());
 
         public Task<bool> ActAsync(FireWorldAction action)
-            => CallFunction2(() => obj.Act(action));
+            => CallFunction2(() => Passive.Act(action));
 
         #endregion // Sense & act
     }

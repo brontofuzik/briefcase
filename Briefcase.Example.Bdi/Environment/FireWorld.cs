@@ -14,7 +14,7 @@ namespace Briefcase.Example.Bdi.Environment
         private readonly Terrain[] world = new Terrain[Size];
         private int firemanPosition;
 
-        public event EventHandler AgentActed;
+        public event EventHandler AfterAct;
 
         // Shortcut
         public int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
@@ -126,7 +126,7 @@ namespace Briefcase.Example.Bdi.Environment
                     break;
             }
 
-            AgentActed?.Invoke(this, new EventArgs());
+            AfterAct?.Invoke(this, new EventArgs());
 
             return result;
         }

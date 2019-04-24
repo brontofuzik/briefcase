@@ -7,6 +7,7 @@ namespace Briefcase.Agents
     public abstract class RealTimeAgent : Agent
     {
         private readonly Thread thread;
+        private TimeSpan? stepTime;
 
         protected RealTimeAgent(string name)
             : base(name)
@@ -22,14 +23,17 @@ namespace Briefcase.Agents
             while (true)
             {
                 await Act();
-                await Task.Delay(TimeSpan.FromSeconds(1));
+
+                if (stepTime.HasValue)
+                    await Task.Delay(stepTime.Value);
             }
         }
 
         protected abstract Task Act();
 
-        public void Run()
+        public void Run(TimeSpan? stepTime)
         {
+            this.stepTime = stepTime;
             thread.Start();
         }
 

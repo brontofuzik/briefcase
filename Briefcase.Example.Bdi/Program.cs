@@ -1,4 +1,5 @@
-﻿using Briefcase.Example.Bdi.Agents;
+﻿using System;
+using Briefcase.Example.Bdi.Agents;
 using Briefcase.Example.Bdi.Environment;
 
 namespace Briefcase.Example.Bdi
@@ -22,7 +23,7 @@ namespace Briefcase.Example.Bdi
 
         private static void RunRealTime()
         {
-            var mas = new RealTimeMas(new RealTimeFireWorld());
+            var mas = new RealTimeMas(new RealTimeFireWorld(), TimeSpan.FromSeconds(0.5));
             mas.AddAgent(new RealTimeFireman("sam"));
             mas.Run();
         }

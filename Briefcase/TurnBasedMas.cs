@@ -11,16 +11,14 @@ namespace Briefcase
         private readonly int? maxTurns;
         private int turn;
 
-        private readonly bool autoRun;
-        private readonly TimeSpan stepTime;
+        private readonly TimeSpan? stepTime;
 
         public TurnBasedMas(TurnBasedEnvironment environment = null, int? maxTurns = null, bool autoRun = false, TimeSpan? stepTime = null)
             : base(environment)
         {
             this.environment = environment;
             this.maxTurns = maxTurns;
-            this.autoRun = autoRun;
-            this.stepTime = stepTime ?? TimeSpan.FromSeconds(1);
+            this.stepTime = stepTime;
         }
 
         public void Run()
@@ -40,8 +38,8 @@ namespace Briefcase
 
         private void Wait()
         {
-            if (autoRun)
-                Thread.Sleep(stepTime);
+            if (stepTime.HasValue)
+                Thread.Sleep(stepTime.Value);
             else
                 Console.ReadKey();
         }

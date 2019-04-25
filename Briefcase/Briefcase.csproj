@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveObject.cs" />
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\RealTimeAgent.cs" />
     <Compile Include="Agents\TurnBasedAgent.cs" />
@@ -54,6 +55,12 @@
     <Compile Include="RealTimeMas.cs" />
     <Compile Include="TurnBasedMas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Briefcase.Utils\Briefcase.Utils.csproj">
+      <Project>{a5783a5d-00cd-49e0-b734-16350389fe07}</Project>
+      <Name>Briefcase.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

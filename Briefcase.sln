@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Example.Bdi", "Br
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Example.Prolog", "Briefcase.Example.Prolog\Briefcase.Example.Prolog.csproj", "{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.ActiveObject", "..\briefcase-active\Briefcase.ActiveObject\Briefcase.ActiveObject.csproj", "{19CF70B1-9623-4A4C-9A92-D04BB52BD741}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Utils", "Briefcase.Utils\Briefcase.Utils.csproj", "{A5783A5D-00CD-49E0-B734-16350389FE07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Utils", "..\briefcase-active\Briefcase.Utils\Briefcase.Utils.csproj", "{A5783A5D-00CD-49E0-B734-16350389FE07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briefcase.Tests", "Briefcase.Tests\Briefcase.Tests.csproj", "{667FBF00-9CCE-43D3-AF6F-B25CF14B6036}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +31,14 @@ Global
 		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A0A78A-E4E7-42CC-A98A-BE8DBEF14EDF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19CF70B1-9623-4A4C-9A92-D04BB52BD741}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A5783A5D-00CD-49E0-B734-16350389FE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A5783A5D-00CD-49E0-B734-16350389FE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5783A5D-00CD-49E0-B734-16350389FE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5783A5D-00CD-49E0-B734-16350389FE07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{667FBF00-9CCE-43D3-AF6F-B25CF14B6036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{667FBF00-9CCE-43D3-AF6F-B25CF14B6036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{667FBF00-9CCE-43D3-AF6F-B25CF14B6036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{667FBF00-9CCE-43D3-AF6F-B25CF14B6036}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

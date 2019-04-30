@@ -1,10 +1,12 @@
-﻿namespace Briefcase.Example.Prolog
+﻿using Briefcase.Environments;
+
+namespace Briefcase.Example.Prolog
 {
-    class WumpusWorld : Environment
+    class WumpusWorld : TurnBasedEnvironment
     {
         public override void Initialize()
         {
-            base.Initialize();
+            throw new System.NotImplementedException();
         }
     }
 }

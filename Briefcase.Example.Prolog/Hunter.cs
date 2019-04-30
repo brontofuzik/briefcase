@@ -1,8 +1,9 @@
 ﻿using System;
+using Briefcase.Agents;
 
 namespace Briefcase.Example.Prolog
 {
-    class Hunter : Agent
+    class Hunter : TurnBasedAgent
     {
         public Hunter(string name)
             : base(name)

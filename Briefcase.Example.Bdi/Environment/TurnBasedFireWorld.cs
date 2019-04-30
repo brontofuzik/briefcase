@@ -5,7 +5,7 @@ using Briefcase.Example.Bdi.Agents;
 
 namespace Briefcase.Example.Bdi.Environment
 {
-    class TurnBasedFireWorld : Environments.TurnBasedEnvironment
+    class TurnBasedFireWorld : Environments.TurnBasedEnvironment<FireWorldPercept, FireWorldAction, bool>
     {
         private readonly FireWorld fireWorld = new FireWorld();
 
@@ -32,9 +32,9 @@ namespace Briefcase.Example.Bdi.Environment
             Debug("Ending turn");
         }
 
-        public FireWorldPercept Perceive() => fireWorld.Perceive();
+        public override FireWorldPercept Perceive() => fireWorld.Perceive();
 
-        public bool Act(FireWorldAction action) => fireWorld.Act(action);
+        public override bool Act(FireWorldAction action) => fireWorld.Act(action);
 
         public override string Show() => fireWorld.Show(FiremanAgent.Show());
 

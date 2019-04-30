@@ -10,4 +10,11 @@
         {
         }
     }
+
+    public abstract class TurnBasedEnvironment<TPercept, TAction, TResult> : TurnBasedEnvironment
+    {
+        public abstract TPercept Perceive();
+
+        public abstract TResult Act(TAction action);
+    }
 }

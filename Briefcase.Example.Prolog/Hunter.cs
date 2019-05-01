@@ -10,7 +10,7 @@ namespace Briefcase.Example.Prolog
         private const int MaxArrows = 1;    
 
         private readonly KnowledgeBase kb = new KnowledgeBase();
-        private readonly List<(int x, int y)> visited = new List<(int x, int y)>();
+        private readonly HashSet<(int x, int y)> visited = new HashSet<(int x, int y)>();
         private int arrows = MaxArrows;
 
         // Hunter's position
@@ -40,19 +40,21 @@ namespace Briefcase.Example.Prolog
             kb.SenseBreeze(position, percept.HasFlag(WumpusPercept.Breeze));
             kb.SenseStench(position, percept.HasFlag(WumpusPercept.Stench));
 
-            var safe = new HashSet<(int x, int y)>();
-            var @unsafe = new HashSet<(int x, int y)>();
-            var pits = new HashSet<(int x, int y)>();
-            var wumpuses = new HashSet<(int x, int y)>();
+            // Determine safe and unsafe locations.
+            var pits = new HashSet<(int x, int y)>(); // Certain pit
+            var wumpuses = new HashSet<(int x, int y)>(); // Certain wumpus
+            var safe = new HashSet<(int x, int y)>(); // Certainly safe
+            var @unsafe = new HashSet<(int x, int y)>(); // Certainly unsafe
 
-            var candidates = visited.SelectMany(n => WumpusEnvironment.Neighbors(n)).ToList();
+            var candidates = visited.SelectMany(n => WumpusEnvironment.Neighbors(n)).Distinct()
+                .Where(n => !visited.Contains(n)).ToList();
 
             foreach (var n in candidates)
             {
-                if (kb.IsPit(n) && !visited.Contains(n))
+                if (kb.IsPit(n))
                     pits.Add(n);
 
-                if (kb.IsWumpus(n) && !visited.Contains(n))
+                if (kb.IsWumpus(n))
                     wumpuses.Add(n);
 
                 if (!kb.IsPit(n) && !kb.IsWumpus(n))
@@ -64,6 +66,21 @@ namespace Briefcase.Example.Prolog
                     @unsafe.Add(n);
                 }
             }
+
+            if (safe.Any())
+            {
+                Move(safe.First());
+            }
+            else
+            {
+                
+            }
+        }
+
+        private void Move((int x, int y) to)
+        {
+            // TODO
+            throw new System.NotImplementedException();
         }
     }
 

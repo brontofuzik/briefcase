@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Hunter.pl" />
+    <None Include="Prolog\Hunter.pl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Briefcase.Utils\Briefcase.Utils.csproj">

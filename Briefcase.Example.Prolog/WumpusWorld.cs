@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Briefcase.Environments;
+using Briefcase.Utils;
 
 namespace Briefcase.Example.Prolog
 {
@@ -26,7 +26,7 @@ namespace Briefcase.Example.Prolog
         }
 
         private static bool IsWithinBounds((int x, int y) p)
-            => p.x.IsIn(0, Size) && p.y.IsIn(0, Size);
+            => p.x.IsWithinInterval(0, Size) && p.y.IsWithinInterval(0, Size);
 
         public override void Initialize()
         {

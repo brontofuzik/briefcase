@@ -65,7 +65,7 @@ namespace Briefcase.Example.Prolog
             return percept;
         }
 
-        private IEnumerable<(int x, int y)> Neighbors((int x, int y) position)
+        public IEnumerable<(int x, int y)> Neighbors((int x, int y) position)
             => Enum.GetValues(typeof(Direction)).Cast<Direction>()
                 .Select(d => PositionTo(position, d));
 

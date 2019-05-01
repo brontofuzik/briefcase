@@ -29,7 +29,6 @@ namespace Briefcase.Example.Prolog
             var percept = WumpusEnvironment.Perceive();
             var action = kb.RunAgent(percept);
             var result = WumpusEnvironment.Act(action);
-            kb.TellAction(result);
         }
     }
 
@@ -44,7 +43,7 @@ namespace Briefcase.Example.Prolog
 
         public void InitAgent(int size, double pitProbability, (int x, int y) initialCell, int initialOrientation)
         {
-            pl.ConsultFromString($"init_agent([{size}, {pitProbability}, [{initialCell.x}, {initialCell.y}], {initialOrientation}])");
+            pl.GetFirstSolution($"init_agent([{size}, {pitProbability}, [{initialCell.x}, {initialCell.y}], {initialOrientation}])");
         }
 
         public WumpusAction RunAgent(WumpusPercept percept)
@@ -72,11 +71,6 @@ namespace Briefcase.Example.Prolog
                 case "grab": return WumpusAction.Grab;
                 default: throw new Exception("Unknown action returned by run_agent!");
             }
-        }
-
-        public void TellAction(ActionResult result)
-        {
-            // TODO
         }
     }
 }

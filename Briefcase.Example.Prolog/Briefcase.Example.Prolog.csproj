@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Prolog\Hunter.pl" />
     <None Include="Prolog\Inants.pl" />
     <None Include="Prolog\Triska.pl" />
   </ItemGroup>

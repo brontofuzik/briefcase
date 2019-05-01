@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using Briefcase.Agents;
 using Prolog;
@@ -38,7 +37,7 @@ namespace Briefcase.Example.Prolog
 
         public InantsKnowledgeBase()
         {
-            pl.Consult("Prolog\\Inants.pl");
+            pl.Consult(@"..\..\Prolog\Inants.pl");
         }
 
         public void InitAgent(int size, double pitProbability, (int x, int y) initialCell, int initialOrientation)

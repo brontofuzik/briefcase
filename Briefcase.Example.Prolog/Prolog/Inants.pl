@@ -7,15 +7,6 @@
 
 :- use_module(library(clpfd)).
 
-/** <module> Wumpus World Agent in Prolog
-
-A Prolog implementation of the hybrid agent for the Wumpus World game.
-The high-level algorithm can be found in the AIMA textbook, Figure 7.20.
-
-@author Armen Inants <armen@inants.com>
-@license GPL
-*/
-
 :- ensure_loaded('astar/astar.pl'). % A-star search implementation
 
 :- dynamic([

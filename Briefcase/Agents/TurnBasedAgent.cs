@@ -7,6 +7,6 @@
         {
         }
 
-        public abstract void Act();
+        public abstract void Step();
     }
 }

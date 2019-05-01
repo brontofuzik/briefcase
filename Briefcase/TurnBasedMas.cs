@@ -49,7 +49,7 @@ namespace Briefcase
             environment?.BeginTurn(turn);
 
             foreach (var agent in GetAllAgents())
-                ((TurnBasedAgent)agent).Act();
+                ((TurnBasedAgent)agent).Step();
 
             environment?.EndTurn(turn);
         }

@@ -26,7 +26,8 @@ namespace Briefcase.Example.Prolog
         }
 
         private static bool IsWithinBounds((int x, int y) p)
-            => p.x.IsWithinInterval(0, Size) && p.y.IsWithinInterval(0, Size);
+            => p.x.IsWithinInterval(0, Size)
+               && p.y.IsWithinInterval(0, Size);
 
         public override void Initialize()
         {

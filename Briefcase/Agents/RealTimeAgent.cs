@@ -22,14 +22,14 @@ namespace Briefcase.Agents
         {
             while (true)
             {
-                await Act();
+                await Step();
 
                 if (stepTime.HasValue)
                     await Task.Delay(stepTime.Value);
             }
         }
 
-        protected abstract Task Act();
+        protected abstract Task Step();
 
         public void Run(TimeSpan? stepTime)
         {

@@ -34,7 +34,7 @@ namespace Briefcase.Example.Bdi.Agents
         // Intentions & plans
 
         private string intention = String.Empty;
-        private readonly List<FireWorldAction> plan = new List<Environment.FireWorldAction>();
+        private readonly List<FireWorldAction> plan = new List<FireWorldAction>();
 
         public RealTimeFireman(string name)
             : base(name)
@@ -53,25 +53,21 @@ namespace Briefcase.Example.Bdi.Agents
             beliefs[Water] = UnknownPosition;
         }
 
-        protected override async Task Act()
+        protected override async Task Step()
         {
+            // Sense
             var percept = await FireEnvironment.Perceive();
 
+            // BDI
             ReviseBeliefs(percept);
-            if (Program.Debug) Print($"Agent.Act - {nameof(ReviseBeliefs)}");
-
             GenerateDesires();
-            if (Program.Debug) Print($"Agent.Act - {nameof(GenerateDesires)}");
-
             AdoptIntention();
-            if (Program.Debug) Print($"Agent.Act - {nameof(AdoptIntention)}");
 
             // Act
             var action = NextAction();
             if (action.HasValue)
             {
                 await ExecuteAction(action.Value);
-                if (Program.Debug) Print($"Agent.Act - {nameof(ExecuteAction)}");
             }
         }
 
@@ -189,13 +185,10 @@ namespace Briefcase.Example.Bdi.Agents
                     // Extinguish fire
                     plan.Add(FireWorldAction.ExtinguishFire);
                     break;
-
-                default:
-                    break;
             }
         }
 
-        private Environment.FireWorldAction? NextAction()
+        private FireWorldAction? NextAction()
         {
             if (!plan.Any())
                 return null;
@@ -209,7 +202,7 @@ namespace Briefcase.Example.Bdi.Agents
             return action;
         }
 
-        private async Task ExecuteAction(Environment.FireWorldAction action)
+        private async Task ExecuteAction(FireWorldAction action)
         {
             var actionResult = await FireEnvironment.Act(action);
 
@@ -231,26 +224,6 @@ namespace Briefcase.Example.Bdi.Agents
             const string withWater = "Å";
 
             return beliefs[HaveWater] == True ? withWater : noWater;
-        }
-
-        // DEBUG
-        private void Print(string message)
-        {
-            Console.WriteLine(message);
-
-            string beliefsStr = String.Join("; ", beliefs.Select(kvp => $"({kvp.Key}, {kvp.Value})"));
-            Console.WriteLine($"Beliefs: {beliefsStr}");
-
-            string desiresStr = String.Join(", ", desires);
-            Console.WriteLine($"Desires: {desiresStr}");
-
-            Console.WriteLine($"Intention: {intention}");
-
-            string planStr = String.Join(", ", plan);
-            Console.WriteLine($"Plan: {planStr}");
-
-            string ruler = new string('-', 100);
-            Console.WriteLine(ruler);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Briefcase.Example.Prolog
 
         public Terrain[,] map = new Terrain[Size, Size];
 
+        // Hunter's position
         public (int x, int y) hunterPosition;
         public Direction hunterDirection;
 

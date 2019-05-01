@@ -16,10 +16,17 @@ namespace Briefcase.Example.Prolog
         public Direction hunterDirection;
 
         // Returns None for positions outside the grid.
-        private Terrain TerrainAt((int x, int y) pos)
-            => pos.x.IsIn(0, Size) && pos.y.IsIn(0, Size)
-                ? map[pos.x, pos.y]
-                : Terrain.None;
+        private Terrain TerrainAt((int x, int y) p)
+            => IsWithinBounds(p) ? map[p.x, p.y] : Terrain.None;
+
+        private void SetTerrainAt((int x, int y) p, Terrain terrain)
+        {
+            if (IsWithinBounds(p))
+                map[p.x, p.y] = terrain;
+        }
+
+        private static bool IsWithinBounds((int x, int y) p)
+            => p.x.IsIn(0, Size) && p.y.IsIn(0, Size);
 
         public override void Initialize()
         {
@@ -137,8 +144,25 @@ namespace Briefcase.Example.Prolog
 
         private ActionResult Act_Shoot()
         {
-            // TODO
-            throw new NotImplementedException();
+            (int x, int y) arrowPosition = hunterPosition;
+            do
+            {
+                arrowPosition = PositionTo(arrowPosition, hunterDirection);
+            }
+            while (TerrainAt(arrowPosition) == Terrain.Wumpus
+                || TerrainAt(arrowPosition) == Terrain.None);
+
+            if (TerrainAt(arrowPosition) == Terrain.Wumpus)
+            {
+                // Wumpus hit!
+                SetTerrainAt(arrowPosition, Terrain.Empty);
+                return ActionResult.Scream;
+            }
+            else
+            {
+                // No wumpus hit.
+                return ActionResult.Ok;
+            } 
         }
 
         private ActionResult Act_Grab()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Configuration;
 using System.Linq;
 using Briefcase.Agents;
 using Prolog;
@@ -7,15 +8,7 @@ namespace Briefcase.Example.Prolog
 {
     class Hunter : TurnBasedAgent
     {
-        private const int MaxArrows = 1;    
-
-        private readonly KnowledgeBase kb = new KnowledgeBase();
-        private readonly HashSet<(int x, int y)> visited = new HashSet<(int x, int y)>();
-        private int arrows = MaxArrows;
-
-        // Hunter's position
-        private (int x, int y) position;
-        private Direction direction;
+        private InantsKnowledgeBase kb = new InantsKnowledgeBase();
 
         public Hunter(string name)
             : base(name)
@@ -28,91 +21,62 @@ namespace Briefcase.Example.Prolog
 
         public override void Initialize()
         {
-            position = (0, 0);
-            direction = Direction.East;
-            visited.Add(position);
+            kb.InitAgent(4, 0.2, (1, 1), 0);
         }
 
         public override void Step()
         {
-            // Sense
             var percept = WumpusEnvironment.Perceive();
-            kb.SenseBreeze(position, percept.HasFlag(WumpusPercept.Breeze));
-            kb.SenseStench(position, percept.HasFlag(WumpusPercept.Stench));
-
-            // Determine safe and unsafe locations.
-            var pits = new HashSet<(int x, int y)>(); // Certain pit
-            var wumpuses = new HashSet<(int x, int y)>(); // Certain wumpus
-            var safe = new HashSet<(int x, int y)>(); // Certainly safe
-            var @unsafe = new HashSet<(int x, int y)>(); // Certainly unsafe
-
-            var candidates = visited.SelectMany(n => WumpusEnvironment.Neighbors(n)).Distinct()
-                .Where(n => !visited.Contains(n)).ToList();
-
-            foreach (var n in candidates)
-            {
-                if (kb.IsPit(n))
-                    pits.Add(n);
-
-                if (kb.IsWumpus(n))
-                    wumpuses.Add(n);
-
-                if (!kb.IsPit(n) && !kb.IsWumpus(n))
-                {
-                    safe.Add(n);
-                }
-                else
-                {
-                    @unsafe.Add(n);
-                }
-            }
-
-            if (safe.Any())
-            {
-                Move(safe.First());
-            }
-            else
-            {
-                
-            }
-        }
-
-        private void Move((int x, int y) to)
-        {
-            // TODO
-            throw new System.NotImplementedException();
+            var action = kb.RunAgent(percept);
+            var result = WumpusEnvironment.Act(action);
+            kb.TellAction(result);
         }
     }
 
-    class KnowledgeBase
+    class InantsKnowledgeBase
     {
         private readonly PrologEngine pl = new PrologEngine();
 
-        public KnowledgeBase()
+        public InantsKnowledgeBase()
         {
-            pl.Consult("Hunter.pl");
+            pl.Consult("Prolog\\Inants.pl");
         }
 
-        public void SenseBreeze((int x, int y) pos, bool breeze)
+        public void InitAgent(int size, double pitProbability, (int x, int y) initialCell, int initialOrientation)
         {
-            pl.ConsultFromString($"sensebreeze([{pos.x}, {pos.y}], {breeze.ToString().ToLower()})");
+            pl.ConsultFromString($"init_agent([{size}, {pitProbability}, [{initialCell.x}, {initialCell.y}], {initialOrientation}])");
         }
 
-        public void SenseStench((int x, int y) pos, bool stench)
+        public WumpusAction RunAgent(WumpusPercept percept)
         {
-            pl.ConsultFromString($"sensestench([{pos.x}, {pos.y}], {stench.ToString().ToLower()})");
+            var stench = percept.HasFlag(WumpusPercept.Stench) ? "yes" : "no";
+            var breeze = percept.HasFlag(WumpusPercept.Breeze) ? "yes" : "no";
+            var glitter = percept.HasFlag(WumpusPercept.Glitter) ? "yes" : "no";
+            var scream = "no"; // TODO
+            var bump = "no"; // TODO
+            string perceptPl = $"[{stench}, {breeze}, {glitter}, {scream}, {bump}]";
+
+            var solution = pl.GetFirstSolution($"run_agent({perceptPl}, Action)");
+
+            if (!solution.Solved)
+                throw new Exception("Cannot solve run_agent(+Percept, -Action)!");
+
+            var actionPl = solution.VarValuesIterator.Single(v => v.Name == "Action").ToString();
+
+            switch (actionPl)
+            {
+                case "forward": return WumpusAction.MoveForward;
+                case "turnLeft": return WumpusAction.TurnLeft;
+                case "turnRight": return WumpusAction.TurnRight;
+                case "shoot": return WumpusAction.Shoot;
+                case "grab": return WumpusAction.Grab;
+                default: throw new Exception("Unknown action returned by run_agent!");
+            }
         }
 
-        public bool IsPit((int x, int y) pos)
+        public void TellAction(ActionResult result)
         {
-            var result = pl.GetFirstSolution(query: $"ispit([{pos.x}, {pos.y}])");
-            return result.Solved;
-        }
-
-        public bool IsWumpus((int x, int y) pos)
-        {
-            var result = pl.GetFirstSolution(query: $"iswumpus([{pos.x}, {pos.y}])");
-            return result.Solved;
+            // TODO
         }
     }
 }

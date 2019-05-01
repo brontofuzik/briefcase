@@ -90,8 +90,8 @@ namespace Briefcase.Example.Prolog
         {
             switch (action)
             {
-                case WumpusAction.Walk:
-                    return Act_Walk();
+                case WumpusAction.MoveForward:
+                    return Act_MoveForward();
 
                 case WumpusAction.TurnLeft:
                     return Act_TurnLeft();
@@ -110,7 +110,7 @@ namespace Briefcase.Example.Prolog
             }
         }
 
-        private ActionResult Act_Walk()
+        private ActionResult Act_MoveForward()
         {
             (int x, int y) newPosition = PositionTo(hunterPosition, hunterDirection);
             Terrain newTerrain = TerrainAt(newPosition);
@@ -200,7 +200,7 @@ namespace Briefcase.Example.Prolog
 
     enum WumpusAction
     {
-        Walk,
+        MoveForward,
         TurnLeft,
         TurnRight,
         Shoot,

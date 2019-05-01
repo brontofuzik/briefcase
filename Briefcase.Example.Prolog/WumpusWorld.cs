@@ -118,13 +118,13 @@ namespace Briefcase.Example.Prolog
                 case Terrain.None:
                     return ActionResult.Bump;
                 case Terrain.Empty:
-                    return ActionResult.Ok;
+                    return ActionResult.Success;
                 case Terrain.Pit:
-                    throw new Exception("Hunter fell into a pit!");
+                    throw new Exception("Hunter fell into a pit!"); // End
                 case Terrain.Wumpus:
-                    throw new Exception("Hunter got eaten by a wumpus!");
+                    throw new Exception("Hunter got eaten by a wumpus!"); // End
                 case Terrain.Gold:
-                    return ActionResult.Ok;
+                    return ActionResult.Success;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -133,13 +133,13 @@ namespace Briefcase.Example.Prolog
         private ActionResult Act_TurnLeft()
         {
             hunterDirection = (Direction) (((int)hunterDirection - 1) % 4);
-            return ActionResult.Ok;
+            return ActionResult.Success;
         }
 
         private ActionResult Act_TurnRight()
         {
             hunterDirection = (Direction)(((int)hunterDirection + 1) % 4);
-            return ActionResult.Ok;
+            return ActionResult.Success;
         }
 
         private ActionResult Act_Shoot()
@@ -161,15 +161,14 @@ namespace Briefcase.Example.Prolog
             else
             {
                 // No wumpus hit.
-                return ActionResult.Ok;
+                return ActionResult.Fail;
             } 
         }
 
         private ActionResult Act_Grab()
-        {
-            // TODO
-            throw new NotImplementedException();
-        }
+            => TerrainAt(hunterPosition) == Terrain.Gold
+                ? throw new Exception("Hunter found the gold!") // End
+                : ActionResult.Fail;
     }
 
     public enum Terrain
@@ -208,8 +207,16 @@ namespace Briefcase.Example.Prolog
 
     enum ActionResult
     {
-        Ok,
-        Bump,
-        Scream
+        // Generic success
+        Success,
+
+        // Shoot success
+        Scream,
+
+        // Generic fail
+        Fail,
+
+        // Walk fail
+        Bump
     }
 }

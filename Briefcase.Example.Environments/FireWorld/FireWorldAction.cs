@@ -1,4 +1,4 @@
-﻿namespace Briefcase.Example.Bdi.Environment
+﻿namespace Briefcase.Example.Environments.FireWorld
 {
     public enum FireWorldAction
     {

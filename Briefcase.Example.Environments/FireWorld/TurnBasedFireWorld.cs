@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using Briefcase.Example.Bdi.Agents;
+using Briefcase.Environments;
 
-namespace Briefcase.Example.Bdi.Environment
+namespace Briefcase.Example.Environments.FireWorld
 {
-    class TurnBasedFireWorld : Environments.TurnBasedEnvironment<FireWorldPercept, FireWorldAction, bool>
+    public class TurnBasedFireWorld : TurnBasedEnvironment<FireWorldPercept, FireWorldAction, bool>
     {
         private readonly FireWorld fireWorld = new FireWorld();
+        private readonly bool debug;
 
-        // Shortcut
-        private TurnBasedFireman FiremanAgent => Mas.GetAllAgents().Single() as TurnBasedFireman;
+        public TurnBasedFireWorld(bool debug)
+        {
+            this.debug = debug;
+        }
 
         public override void Initialize()
         {
@@ -36,11 +38,11 @@ namespace Briefcase.Example.Bdi.Environment
 
         public override bool Act(FireWorldAction action) => fireWorld.Act(action);
 
-        public override string Show() => fireWorld.Show(FiremanAgent.Show());
+        public override string Show() => fireWorld.Show();
 
         private void Debug(string message, [CallerMemberName] string method = null)
         {
-            if (Program.Debug)
+            if (debug)
             {
                 lock (Console.Out)
                 {

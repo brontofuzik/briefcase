@@ -1,4 +1,6 @@
-﻿namespace Briefcase.Example.Prolog
+﻿using Briefcase.Example.Environments.WumpusWorld;
+
+namespace Briefcase.Example.Prolog
 {
     class Program
     {

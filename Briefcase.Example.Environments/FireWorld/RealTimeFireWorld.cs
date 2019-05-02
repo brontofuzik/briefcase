@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Linq;
-using Briefcase.Environments;
 using System.Threading.Tasks;
 using Briefcase.ActiveObject;
-using Briefcase.Example.Bdi.Agents;
+using Briefcase.Environments;
 using Briefcase.Utils;
 
-namespace Briefcase.Example.Bdi.Environment
+namespace Briefcase.Example.Environments.FireWorld
 {
-    class RealTimeFireWorld : RealTimeEnvironment
+    public class RealTimeFireWorld : RealTimeEnvironment
     {
         private readonly ActiveFireWorld active;
 
@@ -28,11 +26,8 @@ namespace Briefcase.Example.Bdi.Environment
         private void ShowEnvironment()
         {
             Console.Clear();
-            Console.WriteLine(active.Passive.Show(FiremanAgent.Show()));
+            Console.WriteLine(active.Passive.Show());
         }
-
-        // Shortcut
-        private RealTimeFireman FiremanAgent => Mas.GetAllAgents().Single() as RealTimeFireman;
 
         public override void Initialize()
         {

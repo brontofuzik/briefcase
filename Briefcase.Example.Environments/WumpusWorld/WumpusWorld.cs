@@ -4,9 +4,9 @@ using System.Linq;
 using Briefcase.Environments;
 using Briefcase.Utils;
 
-namespace Briefcase.Example.Prolog
+namespace Briefcase.Example.Environments.WumpusWorld
 {
-    class WumpusWorld : TurnBasedEnvironment<WumpusPercept, WumpusAction, ActionResult>
+    public class WumpusWorld : TurnBasedEnvironment<WumpusPercept, WumpusAction, ActionResult>
     {
         private const int Size = 4;
 
@@ -191,14 +191,14 @@ namespace Briefcase.Example.Prolog
     }
 
     [Flags]
-    enum WumpusPercept
+    public enum WumpusPercept
     {
         Breeze,
         Stench,
         Glitter
     }
 
-    enum WumpusAction
+    public enum WumpusAction
     {
         MoveForward,
         TurnLeft,
@@ -207,7 +207,7 @@ namespace Briefcase.Example.Prolog
         Grab
     }
 
-    enum ActionResult
+    public enum ActionResult
     {
         // Generic success
         Success,

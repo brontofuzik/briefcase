@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Briefcase.Agents;
-using Briefcase.Example.Bdi.Environment;
+using Briefcase.Example.Environments.FireWorld;
 using Briefcase.Utils;
 
-namespace Briefcase.Example.Bdi.Agents
+namespace Briefcase.Example.Bdi
 {
     class RealTimeFireman : RealTimeAgent
     {
@@ -216,14 +216,6 @@ namespace Briefcase.Example.Bdi.Agents
                 beliefs[Fire] = UnknownPosition;
                 beliefs[HaveWater] = False;
             }
-        }
-
-        internal string Show()
-        {
-            const string noWater = "A";
-            const string withWater = "Å";
-
-            return beliefs[HaveWater] == True ? withWater : noWater;
         }
     }
 }

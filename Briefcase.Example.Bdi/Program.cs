@@ -1,6 +1,5 @@
 ﻿using System;
-using Briefcase.Example.Bdi.Agents;
-using Briefcase.Example.Bdi.Environment;
+using Briefcase.Example.Environments.FireWorld;
 
 namespace Briefcase.Example.Bdi
 {
@@ -16,7 +15,7 @@ namespace Briefcase.Example.Bdi
 
         private static void RunTurnBased()
         {
-            var mas = new TurnBasedMas(new TurnBasedFireWorld());
+            var mas = new TurnBasedMas(new TurnBasedFireWorld(Debug));
             mas.AddAgent(new TurnBasedFireman("sam"));
             mas.Run();
         }

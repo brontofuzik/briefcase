@@ -45,11 +45,11 @@
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\RealTimeAgent.cs" />
     <Compile Include="Agents\TurnBasedAgent.cs" />
+    <Compile Include="Environments\ActiveWorld.cs" />
     <Compile Include="Environments\Environment.cs" />
-    <Compile Include="Environments\RealTimeEnvironment.cs" />
-    <Compile Include="Environments\TurnBasedEnvironment.cs" />
     <Compile Include="Agents\IAgent.cs" />
     <Compile Include="Environments\IEnvironment.cs" />
+    <Compile Include="Environments\PassiveWorld.cs" />
     <Compile Include="IMultiagentSystem.cs" />
     <Compile Include="MultiagentSystem.cs" />
     <Compile Include="RealTimeMas.cs" />

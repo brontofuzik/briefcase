@@ -1,15 +1,15 @@
 ﻿using System;
 using Briefcase.Agents;
-using Briefcase.Environments;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase
 {
     public class RealTimeMas : MultiagentSystem
     {
-        private new readonly RealTimeEnvironment environment;
+        private new readonly Environment environment;
         private readonly TimeSpan? stepTime;
 
-        public RealTimeMas(RealTimeEnvironment environment = null, TimeSpan? stepTime = null)
+        public RealTimeMas(Environment environment = null, TimeSpan? stepTime = null)
             : base(environment)
         {
             this.environment = environment;

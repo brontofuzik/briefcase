@@ -41,8 +41,8 @@ namespace Briefcase.Example.Bdi
         }
 
         // Shortcut
-        private TurnBasedFireWorld FireEnvironment
-            => Environment as TurnBasedFireWorld;
+        private FireEnvironment FireEnvironment
+            => Environment as FireEnvironment;
 
         public override void Initialize()
         {

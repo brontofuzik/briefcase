@@ -9,20 +9,22 @@ namespace Briefcase.Example.Bdi
 
         static void Main(string[] args)
         {
-            //RunTurnBased();
-            RunRealTime();
+            var env = new FireEnvironment(new FireWorld());
+
+            //RunTurnBased(env);
+            RunRealTime(env);
         }
 
-        private static void RunTurnBased()
+        private static void RunTurnBased(FireEnvironment env)
         {
-            var mas = new TurnBasedMas(new TurnBasedFireWorld(Debug));
+            var mas = new TurnBasedMas(env);
             mas.AddAgent(new TurnBasedFireman("sam"));
             mas.Run();
         }
 
-        private static void RunRealTime()
+        private static void RunRealTime(FireEnvironment env)
         {
-            var mas = new RealTimeMas(new RealTimeFireWorld(), TimeSpan.FromSeconds(0.5));
+            var mas = new RealTimeMas(env, TimeSpan.FromSeconds(0.5));
             mas.AddAgent(new RealTimeFireman("sam"));
             mas.Run();
         }

@@ -12,4 +12,12 @@
 
         public Terrain[] VisualField { get; internal set; }
     }
+
+    public enum FireWorldAction
+    {
+        MoveLeft,
+        MoveRight,
+        GetWater,
+        ExtinguishFire
+    }
 }

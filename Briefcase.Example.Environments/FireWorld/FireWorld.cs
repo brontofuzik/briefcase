@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Briefcase.Environments;
 using Briefcase.Utils;
 
 namespace Briefcase.Example.Environments.FireWorld
 {
-    public class FireWorld
+    public class FireWorld : PassiveWorld<object, FireWorldPercept, FireWorldAction, bool>
     {
         public const int Size = 10;
 
@@ -16,8 +17,6 @@ namespace Briefcase.Example.Environments.FireWorld
         // Agent state
         private int firemanPosition;
         private bool firemanHasWater;
-
-        public event EventHandler AfterAct;
 
         // Shortcut
         public int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
@@ -41,7 +40,7 @@ namespace Briefcase.Example.Environments.FireWorld
                 world[random.Next(5, Size)] = Terrain.Fire;
         }
 
-        public FireWorldPercept Perceive()
+        public override FireWorldPercept Perceive(object sensor = default)
         {
             // Left edge
             if (firemanPosition == 0)
@@ -71,7 +70,7 @@ namespace Briefcase.Example.Environments.FireWorld
                 });
         }
 
-        public bool Act(FireWorldAction action)
+        public override bool Act(FireWorldAction action)
         {
             bool result;
             switch (action)
@@ -130,8 +129,6 @@ namespace Briefcase.Example.Environments.FireWorld
                     result = false;
                     break;
             }
-
-            AfterAct?.Invoke(this, new EventArgs());
 
             return result;
         }

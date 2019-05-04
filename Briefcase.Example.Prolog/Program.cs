@@ -6,7 +6,9 @@ namespace Briefcase.Example.Prolog
     {
         static void Main(string[] args)
         {
-            var mas = new TurnBasedMas(new WumpusWorld());
+            var world = new WumpusWorld();
+            var env = new WumpusEnvironment(world);
+            var mas = new TurnBasedMas(env);
             mas.AddAgent(new Hunter("hunter"));
             mas.Run();
         }

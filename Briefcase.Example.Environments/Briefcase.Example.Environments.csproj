@@ -42,12 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FireWorld\FireWorld.cs" />
-    <Compile Include="FireWorld\FireWorldAction.cs" />
-    <Compile Include="FireWorld\FireWorldPercept.cs" />
-    <Compile Include="FireWorld\RealTimeFireWorld.cs" />
-    <Compile Include="FireWorld\TurnBasedFireWorld.cs" />
+    <Compile Include="FireWorld\FireWorldIface.cs" />
+    <Compile Include="FireWorld\FireEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WumpusWorld\WumpusEnvironment.cs" />
     <Compile Include="WumpusWorld\WumpusWorld.cs" />
+    <Compile Include="WumpusWorld\WumpusWorldIface.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

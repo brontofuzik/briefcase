@@ -1,19 +1,19 @@
-﻿using Briefcase.Environments;
-using System;
+﻿using System;
 using System.Threading;
 using Briefcase.Agents;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase
 {
     public class TurnBasedMas : MultiagentSystem
     {
-        private new readonly TurnBasedEnvironment environment;
+        private new readonly Environment environment;
         private readonly int? maxTurns;
         private int turn;
 
         private readonly TimeSpan? stepTime;
 
-        public TurnBasedMas(TurnBasedEnvironment environment = null, int? maxTurns = null, bool autoRun = false, TimeSpan? stepTime = null)
+        public TurnBasedMas(Environment environment = null, int? maxTurns = null, bool autoRun = false, TimeSpan? stepTime = null)
             : base(environment)
         {
             this.environment = environment;

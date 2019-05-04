@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Briefcase.Utils;
 
-namespace Briefcase.ActiveObject
+namespace Briefcase
 {
     public abstract class ActiveObject<T> : IDisposable
     {

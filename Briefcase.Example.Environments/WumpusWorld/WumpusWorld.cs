@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Briefcase.Environments;
 using Briefcase.Utils;
 
 namespace Briefcase.Example.Environments.WumpusWorld
 {
-    public class WumpusWorld : TurnBasedEnvironment<WumpusPercept, WumpusAction, ActionResult>
+    public class WumpusWorld : PassiveWorld<object, WumpusPercept, WumpusAction, ActionResult>
     {
         private const int Size = 4;
 
@@ -46,7 +47,7 @@ namespace Briefcase.Example.Environments.WumpusWorld
             hunterDirection = Direction.East;
         }
 
-        public override WumpusPercept Perceive()
+        public override WumpusPercept Perceive(object sensor = default)
         {
             WumpusPercept percept = 0;
 
@@ -188,37 +189,5 @@ namespace Briefcase.Example.Environments.WumpusWorld
         East,
         South,
         West
-    }
-
-    [Flags]
-    public enum WumpusPercept
-    {
-        Breeze,
-        Stench,
-        Glitter
-    }
-
-    public enum WumpusAction
-    {
-        MoveForward,
-        TurnLeft,
-        TurnRight,
-        Shoot,
-        Grab
-    }
-
-    public enum ActionResult
-    {
-        // Generic success
-        Success,
-
-        // Shoot success
-        Scream,
-
-        // Generic fail
-        Fail,
-
-        // Walk fail
-        Bump
     }
 }

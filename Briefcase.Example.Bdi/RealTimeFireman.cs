@@ -42,8 +42,8 @@ namespace Briefcase.Example.Bdi
         }
 
         // Shortcut
-        private RealTimeFireWorld FireEnvironment
-            => Environment as RealTimeFireWorld;
+        private FireEnvironment FireEnvironment
+            => Environment as FireEnvironment;
 
         public override void Initialize()
         {
@@ -56,7 +56,7 @@ namespace Briefcase.Example.Bdi
         protected override async Task Step()
         {
             // Sense
-            var percept = await FireEnvironment.Perceive();
+            var percept = await FireEnvironment.PerceiveAsync();
 
             // BDI
             ReviseBeliefs(percept);
@@ -204,7 +204,7 @@ namespace Briefcase.Example.Bdi
 
         private async Task ExecuteAction(FireWorldAction action)
         {
-            var actionResult = await FireEnvironment.Act(action);
+            var actionResult = await FireEnvironment.ActAsync(action);
 
             // Got water successfully?
             if (action == FireWorldAction.GetWater && actionResult)

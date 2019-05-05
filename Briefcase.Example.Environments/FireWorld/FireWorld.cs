@@ -21,11 +21,25 @@ namespace Briefcase.Example.Environments.FireWorld
         // Shortcut
         public int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
 
-        public void Initialize()
+        public override void Initialize()
         {
             // Water at location 0.
             SetTerrain((i, _) => i == 0 ? Terrain.Water : Terrain.Normal);
             firemanPosition = 0;
+        }
+
+        protected override void AfterAct()
+        {
+            ResetWater();
+            StartFire();
+
+            ShowEnvironment();
+        }
+
+        private void ShowEnvironment()
+        {
+            Console.Clear();
+            Console.WriteLine(Show());
         }
 
         public void ResetWater()

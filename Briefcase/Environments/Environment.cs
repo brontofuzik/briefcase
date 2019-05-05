@@ -60,7 +60,7 @@ namespace Briefcase.Environments
 
         // Turn-based
         public virtual TResult Act(TAction action)
-            => passiveWorld.Act(action);
+            => passiveWorld.DoAct(action);
 
         // Real-time
         public virtual Task<TResult> ActAsync(TAction action)

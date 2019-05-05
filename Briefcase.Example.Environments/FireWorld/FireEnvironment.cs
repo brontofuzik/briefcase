@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Briefcase.Environments;
+﻿using Briefcase.Environments;
 
 namespace Briefcase.Example.Environments.FireWorld
 {
@@ -9,20 +7,6 @@ namespace Briefcase.Example.Environments.FireWorld
         public FireEnvironment(FireWorld passiveWorld)
             : base(passiveWorld)
         {
-        }
-
-        public override void AfterAct()
-        {
-            passiveWorld.ResetWater();
-            passiveWorld.StartFire();
-
-            ShowEnvironment();
-        }
-
-        private void ShowEnvironment()
-        {
-            Console.Clear();
-            Console.WriteLine(passiveWorld.Show());
         }
 
         public override string Show()

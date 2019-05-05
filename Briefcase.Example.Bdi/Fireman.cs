@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Briefcase.Agents;
-using Briefcase.Example.Bdi.Environment;
+using Briefcase.Example.Environments.FireWorld;
 using Briefcase.Utils;
 
-namespace Briefcase.Example.Bdi.Agents
+namespace Briefcase.Example.Bdi
 {
-    class RealTimeFireman : RealTimeAgent
+    class Fireman : SituatedAgent<FireEnvironment>
     {
         // Beliefs
 
@@ -24,7 +23,7 @@ namespace Briefcase.Example.Bdi.Agents
         private const int False = 0;
 
         // Desires
-
+        
         private readonly HashSet<string> desires = new HashSet<string>();
 
         private const string PatrolRight = "patrol-right";
@@ -34,16 +33,12 @@ namespace Briefcase.Example.Bdi.Agents
         // Intentions & plans
 
         private string intention = String.Empty;
-        private readonly List<FireWorldAction> plan = new List<Environment.FireWorldAction>();
+        private readonly List<FireWorldAction> plan = new List<FireWorldAction>();
 
-        public RealTimeFireman(string name)
+        public Fireman(string name)
             : base(name)
         {
         }
-
-        // Shortcut
-        private RealTimeFireWorld FireEnvironment
-            => Environment as RealTimeFireWorld;
 
         public override void Initialize()
         {
@@ -53,25 +48,26 @@ namespace Briefcase.Example.Bdi.Agents
             beliefs[Water] = UnknownPosition;
         }
 
-        protected override async Task Act()
+        public override void Step(int turn = 0)
         {
-            var percept = await FireEnvironment.Perceive();
+            // Sense
+            var percept = Environment.Perceive();
 
             ReviseBeliefs(percept);
-            if (Program.Debug) Print($"Agent.Act - {nameof(ReviseBeliefs)}");
+            Debug($"Agent.Step - {nameof(ReviseBeliefs)}");
 
             GenerateDesires();
-            if (Program.Debug) Print($"Agent.Act - {nameof(GenerateDesires)}");
+            Debug($"Agent.Step - {nameof(GenerateDesires)}");
 
             AdoptIntention();
-            if (Program.Debug) Print($"Agent.Act - {nameof(AdoptIntention)}");
+            Debug($"Agent.Step - {nameof(AdoptIntention)}");
 
             // Act
             var action = NextAction();
             if (action.HasValue)
             {
-                await ExecuteAction(action.Value);
-                if (Program.Debug) Print($"Agent.Act - {nameof(ExecuteAction)}");
+                ExecuteAction(action.Value);
+                Debug($"Agent.Step - {nameof(ExecuteAction)}");
             }
         }
 
@@ -116,13 +112,13 @@ namespace Briefcase.Example.Bdi.Agents
                 desires.Add(PatrolRight);
 
             // At right end, turn left.
-            if (beliefs[Position] == FireWorld.Size - 1)
+            if (beliefs[Position] == FireWorld.Size - 1) 
             {
                 desires.Remove(PatrolRight);
                 desires.Add(PatrolLeft);
             }
             // At left end, turn right.
-            else if (beliefs[Position] == 0)
+            else if (beliefs[Position] == 0) 
             {
                 desires.Remove(PatrolLeft);
                 desires.Add(PatrolRight);
@@ -161,7 +157,7 @@ namespace Briefcase.Example.Bdi.Agents
         private void MakePlan()
         {
             plan.Clear();
-
+            
             switch (intention)
             {
                 case PatrolRight:
@@ -189,13 +185,10 @@ namespace Briefcase.Example.Bdi.Agents
                     // Extinguish fire
                     plan.Add(FireWorldAction.ExtinguishFire);
                     break;
-
-                default:
-                    break;
             }
         }
 
-        private Environment.FireWorldAction? NextAction()
+        private FireWorldAction? NextAction()
         {
             if (!plan.Any())
                 return null;
@@ -209,9 +202,9 @@ namespace Briefcase.Example.Bdi.Agents
             return action;
         }
 
-        private async Task ExecuteAction(Environment.FireWorldAction action)
+        private void ExecuteAction(FireWorldAction action)
         {
-            var actionResult = await FireEnvironment.Act(action);
+            var actionResult = Environment.Act(action);
 
             // Got water successfully?
             if (action == FireWorldAction.GetWater && actionResult)
@@ -225,12 +218,11 @@ namespace Briefcase.Example.Bdi.Agents
             }
         }
 
-        internal string Show()
+        // DEBUG
+        private void Debug(string message)
         {
-            const string noWater = "A";
-            const string withWater = "Å";
-
-            return beliefs[HaveWater] == True ? withWater : noWater;
+            if (Program.Debug)
+                Print(message);
         }
 
         // DEBUG

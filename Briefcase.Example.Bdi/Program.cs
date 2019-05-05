@@ -1,6 +1,5 @@
 ﻿using System;
-using Briefcase.Example.Bdi.Agents;
-using Briefcase.Example.Bdi.Environment;
+using Briefcase.Example.Environments.FireWorld;
 
 namespace Briefcase.Example.Bdi
 {
@@ -10,22 +9,13 @@ namespace Briefcase.Example.Bdi
 
         static void Main(string[] args)
         {
-            //RunTurnBased();
-            RunRealTime();
-        }
+            var env = new FireEnvironment(new FireWorld());
+            var mas = new MultiagentSystem(env);
+            mas.AddAgent(new Fireman("sam"));
 
-        private static void RunTurnBased()
-        {
-            var mas = new TurnBasedMas(new TurnBasedFireWorld());
-            mas.AddAgent(new TurnBasedFireman("sam"));
-            mas.Run();
-        }
-
-        private static void RunRealTime()
-        {
-            var mas = new RealTimeMas(new RealTimeFireWorld(), TimeSpan.FromSeconds(0.5));
-            mas.AddAgent(new RealTimeFireman("sam"));
-            mas.Run();
+            // Run real-time or turn-based?
+            mas.RunRealtime(TimeSpan.FromSeconds(0.5));
+            //mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
         }
     }
 }

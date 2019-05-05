@@ -1,17 +1,34 @@
-﻿using System;
+﻿using Briefcase.Agents;
+using Briefcase.Example.Environments.WumpusWorld;
 
 namespace Briefcase.Example.Prolog
 {
-    class Hunter : Agent
+    class Hunter : SituatedAgent<WumpusEnvironment>
     {
+        private readonly IKnowledgeBase kb = null; // TODO
+
         public Hunter(string name)
             : base(name)
         {
         }
 
-        public override void Act()
+        public override void Initialize()
         {
-            throw new NotImplementedException();
+            kb.InitAgent(4, 0.2, (1, 1), 0);
         }
+
+        public override void Step(int turn = 0)
+        {
+            var percept = Environment.Perceive();
+            var action = kb.RunAgent(percept);
+            var result = Environment.Act(action);
+        }
+    }
+
+    internal interface IKnowledgeBase
+    {
+        void InitAgent(int size, double pitProbability, (int x, int y) initialCell, int initialOrientation);
+
+        WumpusAction RunAgent(WumpusPercept percept);
     }
 }

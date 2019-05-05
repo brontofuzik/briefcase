@@ -1,29 +1,45 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Briefcase.Environments;
 using Briefcase.Utils;
 
-namespace Briefcase.Example.Bdi.Environment
+namespace Briefcase.Example.Environments.FireWorld
 {
-    class FireWorld
+    public class FireWorld : PassiveWorld<object, FireWorldPercept, FireWorldAction, bool>
     {
         public const int Size = 10;
 
         private readonly Random random = new Random();
 
         private readonly Terrain[] world = new Terrain[Size];
-        private int firemanPosition;
 
-        public event EventHandler AfterAct;
+        // Agent state
+        private int firemanPosition;
+        private bool firemanHasWater;
 
         // Shortcut
         public int? FireLocation => world.IndexOf(t => t == Terrain.Fire);
 
-        public void Initialize()
+        public override void Initialize()
         {
             // Water at location 0.
             SetTerrain((i, _) => i == 0 ? Terrain.Water : Terrain.Normal);
             firemanPosition = 0;
+        }
+
+        protected override void AfterAct()
+        {
+            ResetWater();
+            StartFire();
+
+            ShowEnvironment();
+        }
+
+        private void ShowEnvironment()
+        {
+            Console.Clear();
+            Console.WriteLine(Show());
         }
 
         public void ResetWater()
@@ -38,7 +54,7 @@ namespace Briefcase.Example.Bdi.Environment
                 world[random.Next(5, Size)] = Terrain.Fire;
         }
 
-        public FireWorldPercept Perceive()
+        public override FireWorldPercept Perceive(object sensor = default)
         {
             // Left edge
             if (firemanPosition == 0)
@@ -68,7 +84,7 @@ namespace Briefcase.Example.Bdi.Environment
                 });
         }
 
-        public bool Act(FireWorldAction action)
+        public override bool Act(FireWorldAction action)
         {
             bool result;
             switch (action)
@@ -101,6 +117,7 @@ namespace Briefcase.Example.Bdi.Environment
                     if (world[firemanPosition] == Terrain.Water)
                     {
                         world[firemanPosition] = Terrain.GettingWater;
+                        firemanHasWater = true;
                         result = true;
                     }
                     else
@@ -113,6 +130,7 @@ namespace Briefcase.Example.Bdi.Environment
                     if (world[firemanPosition] == Terrain.Fire)
                     {
                         world[firemanPosition] = Terrain.Normal;
+                        firemanHasWater = false;
                         result = true; // Message: fire-out
                     }
                     else
@@ -126,8 +144,6 @@ namespace Briefcase.Example.Bdi.Environment
                     break;
             }
 
-            AfterAct?.Invoke(this, new EventArgs());
-
             return result;
         }
 
@@ -138,7 +154,7 @@ namespace Briefcase.Example.Bdi.Environment
                 world[i] = setter(i, world[i]);
         }
 
-        internal string Show(string firemanShow)
+        internal string Show()
         {
             const char horizontalBar = '─';
             const char verticalBar = '|';
@@ -150,10 +166,10 @@ namespace Briefcase.Example.Bdi.Environment
 
             var ruler = new String(horizontalBar, 2 * Size + 1);
 
-            var agentArray = Enumerable.Range(0, Size).Select(p => p == firemanPosition ? firemanShow : normal);
+            var agentArray = Enumerable.Range(0, Size).Select(p => p == firemanPosition ? ShowFireman() : normal);
             var agentRow = $"|{String.Join(verticalBar.ToString(), agentArray)}|";
 
-            var worldArray = world.Select(t => t.Switch(normal,
+            var worldArray = world.Select<Terrain, string>(t => t.Switch(normal,
                 (Terrain.Fire, fire),
                 (Terrain.Water, water),
                 (Terrain.GettingWater, gettingWater)));
@@ -166,6 +182,14 @@ namespace Briefcase.Example.Bdi.Environment
                 .AppendLine(worldRow)
                 .Append(ruler)
                 .ToString();
+        }
+
+        private string ShowFireman()
+        {
+            const string noWater = "A";
+            const string withWater = "Å";
+
+            return firemanHasWater ? withWater : noWater;
         }
 
         // DEBUG

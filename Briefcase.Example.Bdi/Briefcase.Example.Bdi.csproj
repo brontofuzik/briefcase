@@ -43,13 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agents\RealTimeFireman.cs" />
-    <Compile Include="Environment\FireWorldAction.cs" />
-    <Compile Include="Environment\FireWorld.cs" />
-    <Compile Include="Environment\FireWorldPercept.cs" />
-    <Compile Include="Agents\TurnBasedFireman.cs" />
-    <Compile Include="Environment\RealTimeFireWorld.cs" />
-    <Compile Include="Environment\TurnBasedFireWorld.cs" />
+    <Compile Include="Fireman.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,6 +51,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Briefcase.Example.Environments\Briefcase.Example.Environments.csproj">
+      <Project>{6a6e6d60-b3c9-4f02-8ea6-ea01cd2d0246}</Project>
+      <Name>Briefcase.Example.Environments</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Briefcase.Utils\Briefcase.Utils.csproj">
       <Project>{a5783a5d-00cd-49e0-b734-16350389fe07}</Project>
       <Name>Briefcase.Utils</Name>
@@ -66,5 +64,6 @@
       <Name>Briefcase</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

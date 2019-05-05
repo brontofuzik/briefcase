@@ -1,13 +1,12 @@
-﻿using Briefcase.Environments;
-
-namespace Briefcase.Agents
+﻿namespace Briefcase.Agents
 {
+    // Do we need this?
     public interface IAgent
     {
         string Id { get; }
 
-        IEnvironment Environment { get; set; }
-
         void Initialize();
+
+        void Step(int turn = 0);
     }
 }

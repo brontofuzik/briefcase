@@ -13,8 +13,33 @@ namespace Briefcase.Agents
 
         public string Id => $"{name}:{GetType().Name}";
 
-        public IEnvironment Environment { get; set; }
-
         public virtual void Initialize() {}
+
+        public abstract void Step(int turn = 0);
+    }
+
+    public abstract class SituatedAgent : Agent
+    {
+        protected SituatedAgent(string name)
+            : base(name)
+        {
+        }
+
+        public IEnvironment Environment { get; set; }
+    }
+
+    public abstract class SituatedAgent<TEnvironment> : SituatedAgent
+        where TEnvironment : IEnvironment
+    {
+        protected SituatedAgent(string name)
+            : base(name)
+        {
+        }
+
+        public new TEnvironment Environment
+        {
+            get => (TEnvironment)base.Environment;
+            set => base.Environment = value;
+        }
     }
 }

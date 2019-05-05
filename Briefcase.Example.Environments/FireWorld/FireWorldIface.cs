@@ -1,4 +1,4 @@
-﻿namespace Briefcase.Example.Bdi.Environment
+﻿namespace Briefcase.Example.Environments.FireWorld
 {
     public struct FireWorldPercept
     {
@@ -11,5 +11,13 @@
         public int Position { get; internal set; }
 
         public Terrain[] VisualField { get; internal set; }
+    }
+
+    public enum FireWorldAction
+    {
+        MoveLeft,
+        MoveRight,
+        GetWater,
+        ExtinguishFire
     }
 }

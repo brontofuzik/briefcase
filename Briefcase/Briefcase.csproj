@@ -44,7 +44,6 @@
     <Compile Include="ActiveObject.cs" />
     <Compile Include="Agents\Agent.cs" />
     <Compile Include="Agents\RealTimeAgent.cs" />
-    <Compile Include="Agents\TurnBasedAgent.cs" />
     <Compile Include="Environments\ActiveWorld.cs" />
     <Compile Include="Environments\Environment.cs" />
     <Compile Include="Agents\IAgent.cs" />

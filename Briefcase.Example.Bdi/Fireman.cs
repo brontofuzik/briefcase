@@ -7,7 +7,7 @@ using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi
 {
-    class TurnBasedFireman : TurnBasedAgent
+    class Fireman : Agent<FireEnvironment>
     {
         // Beliefs
 
@@ -35,14 +35,10 @@ namespace Briefcase.Example.Bdi
         private string intention = String.Empty;
         private readonly List<FireWorldAction> plan = new List<FireWorldAction>();
 
-        public TurnBasedFireman(string name)
+        public Fireman(string name)
             : base(name)
         {
         }
-
-        // Shortcut
-        private FireEnvironment FireEnvironment
-            => Environment as FireEnvironment;
 
         public override void Initialize()
         {
@@ -55,7 +51,7 @@ namespace Briefcase.Example.Bdi
         public override void Step()
         {
             // Sense
-            var percept = FireEnvironment.Perceive();
+            var percept = Environment.Perceive();
 
             ReviseBeliefs(percept);
             Debug($"Agent.Step - {nameof(ReviseBeliefs)}");
@@ -208,7 +204,7 @@ namespace Briefcase.Example.Bdi
 
         private void ExecuteAction(FireWorldAction action)
         {
-            var actionResult = FireEnvironment.Act(action);
+            var actionResult = Environment.Act(action);
 
             // Got water successfully?
             if (action == FireWorldAction.GetWater && actionResult)

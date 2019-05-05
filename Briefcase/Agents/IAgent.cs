@@ -6,8 +6,8 @@ namespace Briefcase.Agents
     {
         string Id { get; }
 
-        IEnvironment Environment { get; set; }
-
         void Initialize();
+
+        void Step();
     }
 }

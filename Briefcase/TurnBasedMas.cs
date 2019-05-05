@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using Briefcase.Agents;
 using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase
@@ -49,7 +48,7 @@ namespace Briefcase
             environment?.BeginTurn(turn);
 
             foreach (var agent in GetAllAgents())
-                ((TurnBasedAgent)agent).Step();
+                agent.Step();
 
             environment?.EndTurn(turn);
         }

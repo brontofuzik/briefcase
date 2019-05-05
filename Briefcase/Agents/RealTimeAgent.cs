@@ -4,17 +4,20 @@ using System.Threading.Tasks;
 
 namespace Briefcase.Agents
 {
-    public abstract class RealTimeAgent : Agent
+    // Decorator
+    public class RealTimeAgent
     {
+        private readonly Agent agent;
+
         private readonly Thread thread;
         private TimeSpan? stepTime;
 
-        protected RealTimeAgent(string name)
-            : base(name)
+        protected RealTimeAgent(Agent agent)
         {
+            this.agent = agent;
             thread = new Thread(Loop)
             {
-                Name = $"RealTimeAgent_{name}"
+                Name = $"RealTimeAgent_{agent.Id}"
             };          
         }
 
@@ -22,14 +25,12 @@ namespace Briefcase.Agents
         {
             while (true)
             {
-                await Step();
+                agent.Step();
 
                 if (stepTime.HasValue)
                     await Task.Delay(stepTime.Value);
             }
         }
-
-        protected abstract Task Step();
 
         public void Run(TimeSpan? stepTime)
         {

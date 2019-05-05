@@ -1,4 +1,5 @@
-﻿using Briefcase.Example.Environments.WumpusWorld;
+﻿using System;
+using Briefcase.Example.Environments.WumpusWorld;
 
 namespace Briefcase.Example.Prolog
 {
@@ -6,11 +7,10 @@ namespace Briefcase.Example.Prolog
     {
         static void Main(string[] args)
         {
-            var world = new WumpusWorld();
-            var env = new WumpusEnvironment(world);
-            var mas = new TurnBasedMas(env);
+            var env = new WumpusEnvironment(new WumpusWorld());
+            var mas = new MultiagentSystem(env);
             mas.AddAgent(new Hunter("hunter"));
-            mas.Run();
+            mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
         }
     }
 }

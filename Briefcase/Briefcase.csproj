@@ -51,8 +51,6 @@
     <Compile Include="Environments\PassiveWorld.cs" />
     <Compile Include="IMultiagentSystem.cs" />
     <Compile Include="MultiagentSystem.cs" />
-    <Compile Include="RealTimeMas.cs" />
-    <Compile Include="TurnBasedMas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -15,17 +15,27 @@ namespace Briefcase.Agents
 
         public virtual void Initialize() {}
 
-        public abstract void Step();
+        public abstract void Step(int turn = 0);
     }
 
-    public abstract class Agent<TEnvironment> : Agent
-        where TEnvironment : IEnvironment
+    public abstract class SituatedAgent : Agent
     {
-        protected Agent(string name)
+        protected SituatedAgent(string name)
             : base(name)
         {
         }
 
-        public TEnvironment Environment { get; set; }
+        public IEnvironment Environment { get; set; }
+    }
+
+    public abstract class SituatedAgent<TEnvironment> : SituatedAgent
+        where TEnvironment : IEnvironment
+    {
+        protected SituatedAgent(string name)
+            : base(name)
+        {
+        }
+
+        public new TEnvironment Environment { get; set; }
     }
 }

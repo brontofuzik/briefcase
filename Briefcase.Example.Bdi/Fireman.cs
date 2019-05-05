@@ -7,7 +7,7 @@ using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi
 {
-    class Fireman : Agent<FireEnvironment>
+    class Fireman : SituatedAgent<FireEnvironment>
     {
         // Beliefs
 
@@ -48,7 +48,7 @@ namespace Briefcase.Example.Bdi
             beliefs[Water] = UnknownPosition;
         }
 
-        public override void Step()
+        public override void Step(int turn = 0)
         {
             // Sense
             var percept = Environment.Perceive();

@@ -12,7 +12,7 @@ namespace Briefcase.Agents
         private readonly Thread thread;
         private TimeSpan? stepTime;
 
-        protected RealTimeAgent(Agent agent)
+        internal RealTimeAgent(Agent agent)
         {
             this.agent = agent;
             thread = new Thread(Loop)

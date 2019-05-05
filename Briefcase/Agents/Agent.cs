@@ -36,6 +36,10 @@ namespace Briefcase.Agents
         {
         }
 
-        public new TEnvironment Environment { get; set; }
+        public new TEnvironment Environment
+        {
+            get => (TEnvironment)base.Environment;
+            set => base.Environment = value;
+        }
     }
 }

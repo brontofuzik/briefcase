@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design.Serialization;
 using Briefcase.Example.Environments.FireWorld;
 
 namespace Briefcase.Example.Bdi
@@ -16,7 +15,7 @@ namespace Briefcase.Example.Bdi
 
             // Run real-time or turn-based?
             mas.RunRealtime(TimeSpan.FromSeconds(0.5));
-            mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
+            //mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
         }
     }
 }

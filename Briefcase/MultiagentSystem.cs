@@ -35,6 +35,8 @@ namespace Briefcase
         public IEnumerable<IAgent> GetAllAgents()
             => agents.Values;
 
+        #region Real-time
+
         public void RunRealtime(TimeSpan? stepTime = null)
         {
             Initialize();
@@ -50,11 +52,13 @@ namespace Briefcase
             realTimeAgents.ForEach(a => a.Run(stepTime));
         }
 
+        #endregion // Real-time
+
+        #region Turn-based
+
         public void RunTurnbased(int? maxTurns = null, TimeSpan? stepTime = null)
         {
             Initialize();
-
-            ShowEnvironment();
             Wait(stepTime);
 
             RunAgents_Turnbased(maxTurns, stepTime);
@@ -66,8 +70,6 @@ namespace Briefcase
             while (!maxTurns.HasValue || turn < maxTurns)
             {
                 RunTurn(turn++);
-
-                ShowEnvironment();
                 Wait(stepTime);
             }
         }
@@ -77,13 +79,6 @@ namespace Briefcase
             GetAllAgents().ForEach(a => a.Step(turn));
         }
 
-        // TODO Remove.
-        private void ShowEnvironment()
-        {
-            Console.Clear();
-            Console.WriteLine(environment.Show());
-        }
-
         private void Wait(TimeSpan? stepTime = null)
         {
             if (stepTime.HasValue)
@@ -91,6 +86,8 @@ namespace Briefcase
             else
                 Console.ReadKey();
         }
+
+        #endregion // Turn-based
 
         protected void Initialize()
         {

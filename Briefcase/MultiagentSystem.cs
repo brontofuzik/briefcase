@@ -1,38 +1,39 @@
 ﻿using System;
 using Briefcase.Agents;
-using Briefcase.Environments;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Briefcase.Utils;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase
 {
-    public class MultiagentSystem : IMultiagentSystem
+    public class MultiagentSystem
     {
-        protected readonly IDictionary<string, IAgent> agents = new Dictionary<string, IAgent>();
-        protected readonly IEnvironment environment;
+        protected readonly IDictionary<string, Agent> agents = new Dictionary<string, Agent>();
+        protected readonly Environment environment;
         
-        public MultiagentSystem(IEnvironment environment = null)
+        public MultiagentSystem(Environment environment = null)
         {
             this.environment = environment;
             environment.Mas = this;
         }
 
-        public void AddAgent(IAgent agent)
+        public void AddAgent(Agent agent)
         {
             agents[agent.Id] = agent;
+            agent.Mas = this;
             if (agent is SituatedAgent situated)
             {
                 situated.Environment = environment;
             }
         }
 
-        public IAgent GetAgent(string id)
+        public Agent GetAgent(string id)
             => agents.GetOrDefault(id);
 
         // Read-only
-        public IEnumerable<IAgent> GetAllAgents()
+        public IEnumerable<Agent> GetAllAgents()
             => agents.Values;
 
         #region Real-time
@@ -93,6 +94,11 @@ namespace Briefcase
         {
             environment?.Initialize();
             GetAllAgents().ForEach(a => a.Initialize());
+        }
+
+        public void Send(Message message)
+        {
+            GetAgent(message.Receiver)?.Post(message);
         }
     }
 }

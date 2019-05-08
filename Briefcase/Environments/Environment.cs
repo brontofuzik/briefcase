@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace Briefcase.Environments
 {
-    public abstract class Environment : IEnvironment
+    public abstract class Environment
     {
-        public IMultiagentSystem Mas { get; set; }
+        public MultiagentSystem Mas { get; set; }
 
         public virtual void Initialize()
         {

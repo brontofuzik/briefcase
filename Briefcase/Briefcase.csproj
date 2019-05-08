@@ -46,10 +46,8 @@
     <Compile Include="Agents\RealTimeAgent.cs" />
     <Compile Include="Environments\ActiveWorld.cs" />
     <Compile Include="Environments\Environment.cs" />
-    <Compile Include="Agents\IAgent.cs" />
-    <Compile Include="Environments\IEnvironment.cs" />
     <Compile Include="Environments\PassiveWorld.cs" />
-    <Compile Include="IMultiagentSystem.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="MultiagentSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +56,9 @@
       <Project>{a5783a5d-00cd-49e0-b734-16350389fe07}</Project>
       <Name>Briefcase.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Hosting\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,19 +9,27 @@ namespace Briefcase.Agents
     {
         private readonly Agent agent;
 
-        private readonly Thread thread;
+        private readonly Thread actionThread;
+        private readonly Thread messageProcessingThread;
+
         private TimeSpan? stepTime;
 
         internal RealTimeAgent(Agent agent)
         {
             this.agent = agent;
-            thread = new Thread(Loop)
+
+            actionThread = new Thread(Act)
             {
-                Name = $"RealTimeAgent_{agent.Id}"
-            };          
+                Name = $"{agent.Id}_actionThread"
+            }; 
+            
+            messageProcessingThread = new Thread(ProcessMessages)
+            {
+                Name = $"{agent.Id}_messageProcessingThread"
+            };
         }
 
-        private async void Loop()
+        private async void Act()
         {
             while (true)
             {
@@ -32,15 +40,38 @@ namespace Briefcase.Agents
             }
         }
 
+        private void ProcessMessages()
+        {
+            while (true)
+            {
+                //messagesResetEvent.WaitOne();
+
+                lock (agent.messages)
+                {
+                    var result = agent.messages.TryDequeue(out Message message);
+                    if (result)
+                    {
+                        agent.HandleMessage(message);
+                    }
+
+                    //if (messagesQueue.Count == 0)
+                    //    messagesResetEvent.Reset();
+                }
+            }
+        }
+
         public void Run(TimeSpan? stepTime)
         {
             this.stepTime = stepTime;
-            thread.Start();
+
+            actionThread.Start();
+            messageProcessingThread.Start();
         }
 
         public void Kill()
         {
-            thread.Abort();
+            actionThread.Abort();
+            messageProcessingThread.Abort();
         }
     }
 }

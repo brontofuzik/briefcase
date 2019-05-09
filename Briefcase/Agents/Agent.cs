@@ -8,7 +8,7 @@ namespace Briefcase.Agents
     {
         private readonly string name;
 
-        private readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
+        internal readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
 
         protected Agent(string name)
         {
@@ -40,6 +40,8 @@ namespace Briefcase.Agents
         {
             messages.Enqueue(message);
         }
+
+        protected internal abstract void HandleMessage(Message message);
 
         #endregion // Comm
     }

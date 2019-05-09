@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{89BF90E4-77E5-4A37-8F76-43C6D956E33C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Briefcase</RootNamespace>
-    <AssemblyName>Briefcase</AssemblyName>
+    <ProjectGuid>{1E628B53-EC7E-4806-B4A9-3CB908CC94DD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Briefcase.Example.Simple</RootNamespace>
+    <AssemblyName>Briefcase.Example.Simple</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,30 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveObject.cs" />
-    <Compile Include="Agents\Agent.cs" />
-    <Compile Include="Agents\RealTimeAgent.cs" />
-    <Compile Include="Agents\RealTimeAgent_Mailbox.cs" />
-    <Compile Include="Environments\ActiveWorld.cs" />
-    <Compile Include="Environments\Environment.cs" />
-    <Compile Include="Environments\PassiveWorld.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MultiagentSystem.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Briefcase.Utils\Briefcase.Utils.csproj">
-      <Project>{a5783a5d-00cd-49e0-b734-16350389fe07}</Project>
-      <Name>Briefcase.Utils</Name>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Briefcase\Briefcase.csproj">
+      <Project>{89bf90e4-77e5-4a37-8f76-43c6d956e33c}</Project>
+      <Name>Briefcase</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hosting\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Actress">
-      <Version>0.2.1</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -23,6 +23,11 @@ namespace Briefcase.Example.Prolog
             var action = kb.RunAgent(percept);
             var result = Environment.Act(action);
         }
+
+        protected override void HandleMessage(Message message)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     internal interface IKnowledgeBase

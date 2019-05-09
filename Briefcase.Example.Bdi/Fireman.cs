@@ -244,5 +244,10 @@ namespace Briefcase.Example.Bdi
             string ruler = new string('-', 100);
             Console.WriteLine(ruler);
         }
+
+        protected override void HandleMessage(Message message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

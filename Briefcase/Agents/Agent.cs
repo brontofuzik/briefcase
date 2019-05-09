@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Briefcase.Environments;
 
 namespace Briefcase.Agents
@@ -8,14 +7,13 @@ namespace Briefcase.Agents
     {
         private readonly string name;
 
-        internal readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
-
         protected Agent(string name)
         {
             this.name = name;
         }
 
-        public string Id => $"{name}:{GetType().Name}";
+        // FIPA AID
+        public string Id => $"{name}";
 
         internal MultiagentSystem Mas { get; set; }
 
@@ -34,11 +32,6 @@ namespace Briefcase.Agents
         {
             foreach (string receiver in receivers)
                 Send(receiver, content, conversationId);
-        }
-
-        internal void Post(Message message)
-        {
-            messages.Enqueue(message);
         }
 
         protected internal abstract void HandleMessage(Message message);

@@ -11,6 +11,8 @@ namespace Briefcase
     public class MultiagentSystem
     {
         protected readonly IDictionary<string, Agent> agents = new Dictionary<string, Agent>();
+        private IDictionary<string, RuntimeAgent> runtimeAgents;
+
         protected readonly Environment environment;
         
         public MultiagentSystem(Environment environment = null)
@@ -32,6 +34,9 @@ namespace Briefcase
         public Agent GetAgent(string id)
             => agents.GetOrDefault(id);
 
+        private RuntimeAgent GetRuntimeAgent(string id)
+            => runtimeAgents.GetOrDefault(id);
+
         // Read-only
         public IEnumerable<Agent> GetAllAgents()
             => agents.Values;
@@ -46,12 +51,15 @@ namespace Briefcase
 
         private void RunAgents_Realtime(TimeSpan? stepTime = null)
         {
-            var realTimeAgents = GetAllAgents()
-                .Cast<Agent>() // TODO Remove IAgent?
-                .Select(a => new RealTimeAgent(a));
+            runtimeAgents = GetAllAgents()
+                .Select(MakeRealtime)
+                .ToDictionary(a => a.Id);
 
-            realTimeAgents.ForEach(a => a.Run(stepTime));
+            runtimeAgents.Values.ForEach(a => a.Run(stepTime));
         }
+
+        private static RuntimeAgent MakeRealtime(Agent agent)
+            => new RealTimeAgent_Queue(agent);
 
         #endregion // Real-time
 
@@ -98,7 +106,7 @@ namespace Briefcase
 
         public void Send(Message message)
         {
-            GetAgent(message.Receiver)?.Post(message);
+            GetRuntimeAgent(message.Receiver)?.Post(message);
         }
     }
 }

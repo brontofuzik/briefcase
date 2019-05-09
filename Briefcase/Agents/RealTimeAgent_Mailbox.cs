@@ -5,8 +5,7 @@ using Actress;
 
 namespace Briefcase.Agents
 {
-    // Decorator
-    public class RealTimeAgent_Mailbox
+    internal class RealTimeAgent_Mailbox : RuntimeAgent
     {
         private readonly Agent agent;
 
@@ -15,7 +14,10 @@ namespace Briefcase.Agents
 
         private TimeSpan? stepTime;
 
+        public string Id => agent.Id;
+
         internal RealTimeAgent_Mailbox(Agent agent)
+            : base(agent)
         {
             this.agent = agent;
 
@@ -45,7 +47,12 @@ namespace Briefcase.Agents
             }
         }
 
-        public void Run(TimeSpan? stepTime)
+        public override void Post(Message message)
+        {
+            mailbox.Post(message);
+        }
+
+        public override void Run(TimeSpan? stepTime)
         {
             this.stepTime = stepTime;
 

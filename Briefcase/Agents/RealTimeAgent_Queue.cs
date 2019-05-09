@@ -1,23 +1,23 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Briefcase.Agents
 {
     // Decorator
-    public class RealTimeAgent
+    internal class RealTimeAgent_Queue : RuntimeAgent
     {
-        private readonly Agent agent;
+        private readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
 
         private readonly Thread actionThread;
         private readonly Thread messageProcessingThread;
 
         private TimeSpan? stepTime;
 
-        internal RealTimeAgent(Agent agent)
+        internal RealTimeAgent_Queue(Agent agent)
+            :base(agent)
         {
-            this.agent = agent;
-
             actionThread = new Thread(Act)
             {
                 Name = $"{agent.Id}_actionThread"
@@ -28,6 +28,8 @@ namespace Briefcase.Agents
                 Name = $"{agent.Id}_messageProcessingThread"
             };
         }
+
+        public string Id => agent.Id;
 
         private async void Act()
         {
@@ -46,9 +48,9 @@ namespace Briefcase.Agents
             {
                 //messagesResetEvent.WaitOne();
 
-                lock (agent.messages)
+                lock (messages)
                 {
-                    var result = agent.messages.TryDequeue(out Message message);
+                    var result = messages.TryDequeue(out Message message);
                     if (result)
                     {
                         agent.HandleMessage(message);
@@ -60,7 +62,12 @@ namespace Briefcase.Agents
             }
         }
 
-        public void Run(TimeSpan? stepTime)
+        public override void Post(Message message)
+        {
+            messages.Enqueue(message);
+        }
+
+        public override void Run(TimeSpan? stepTime)
         {
             this.stepTime = stepTime;
 

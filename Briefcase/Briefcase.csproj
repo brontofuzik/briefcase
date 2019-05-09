@@ -43,7 +43,8 @@
   <ItemGroup>
     <Compile Include="ActiveObject.cs" />
     <Compile Include="Agents\Agent.cs" />
-    <Compile Include="Agents\RealTimeAgent.cs" />
+    <Compile Include="Agents\RuntimeAgent.cs" />
+    <Compile Include="Agents\RealTimeAgent_Queue.cs" />
     <Compile Include="Agents\RealTimeAgent_Mailbox.cs" />
     <Compile Include="Environments\ActiveWorld.cs" />
     <Compile Include="Environments\Environment.cs" />

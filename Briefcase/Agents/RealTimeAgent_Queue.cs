@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Briefcase.Agents
 {
@@ -9,37 +8,15 @@ namespace Briefcase.Agents
     internal class RealTimeAgent_Queue : RuntimeAgent
     {
         private readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
-
-        private readonly Thread actionThread;
         private readonly Thread messageProcessingThread;
-
-        private TimeSpan? stepTime;
 
         internal RealTimeAgent_Queue(Agent agent)
             :base(agent)
-        {
-            actionThread = new Thread(Act)
-            {
-                Name = $"{agent.Id}_actionThread"
-            }; 
-            
+        {        
             messageProcessingThread = new Thread(ProcessMessages)
             {
                 Name = $"{agent.Id}_messageProcessingThread"
             };
-        }
-
-        public string Id => agent.Id;
-
-        private async void Act()
-        {
-            while (true)
-            {
-                agent.Step();
-
-                if (stepTime.HasValue)
-                    await Task.Delay(stepTime.Value);
-            }
         }
 
         private void ProcessMessages()
@@ -69,15 +46,13 @@ namespace Briefcase.Agents
 
         public override void Run(TimeSpan? stepTime)
         {
-            this.stepTime = stepTime;
-
-            actionThread.Start();
+            base.Run(stepTime);
             messageProcessingThread.Start();
         }
 
-        public void Kill()
+        public override void Kill()
         {
-            actionThread.Abort();
+            base.Kill();
             messageProcessingThread.Abort();
         }
     }

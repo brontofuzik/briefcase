@@ -18,7 +18,8 @@ namespace Briefcase
         public MultiagentSystem(Environment environment = null)
         {
             this.environment = environment;
-            environment.Mas = this;
+            if (environment != null)
+                environment.Mas = this;
         }
 
         public void AddAgent(Agent agent)

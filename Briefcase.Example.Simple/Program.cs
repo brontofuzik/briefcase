@@ -10,11 +10,11 @@ namespace Briefcase.Example.Simple
             var mas = new MultiagentSystem();
 
             mas.AddAgent(new SimpleAgent("simple1"));
-            mas.AddAgent(new SimpleAgent("simple2"));
+            //mas.AddAgent(new SimpleAgent("simple2"));
             mas.AddAgent(new Logger("logger"));
 
-            mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
-            //mas.RunRealtime();
+            //mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
+            mas.RunRealtime();
         }
     }
 
@@ -32,7 +32,7 @@ namespace Briefcase.Example.Simple
 
         protected override void HandleMessage(Message message)
         {
-            throw new NotImplementedException();
+            // Do nothing.
         }
     }
 
@@ -45,12 +45,12 @@ namespace Briefcase.Example.Simple
 
         public override void Step(int turn = 0)
         {
-
+            // Do nothing.
         }
 
         protected override void HandleMessage(Message message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(message.Content);
         }
     }
 }

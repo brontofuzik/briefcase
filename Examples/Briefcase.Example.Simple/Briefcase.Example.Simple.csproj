@@ -50,7 +50,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Briefcase\Briefcase.csproj">
+    <ProjectReference Include="..\..\Briefcase\Briefcase.csproj">
       <Project>{89bf90e4-77e5-4a37-8f76-43c6d956e33c}</Project>
       <Name>Briefcase</Name>
     </ProjectReference>

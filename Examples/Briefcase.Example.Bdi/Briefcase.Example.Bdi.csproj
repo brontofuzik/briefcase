@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6A6E6D60-B3C9-4F02-8EA6-EA01CD2D0246}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Briefcase.Example.Environments</RootNamespace>
-    <AssemblyName>Briefcase.Example.Environments</AssemblyName>
+    <ProjectGuid>{C86A612D-0DF4-4FE9-8659-6CAC4C9C2317}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Briefcase.Example.Bdi</RootNamespace>
+    <AssemblyName>Briefcase.Example.Bdi</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,24 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FireWorld\FireWorld.cs" />
-    <Compile Include="FireWorld\FireWorldIface.cs" />
-    <Compile Include="FireWorld\FireEnvironment.cs" />
+    <Compile Include="Fireman.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WumpusWorld\WumpusEnvironment.cs" />
-    <Compile Include="WumpusWorld\WumpusWorld.cs" />
-    <Compile Include="WumpusWorld\WumpusWorldIface.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Briefcase.Utils\Briefcase.Utils.csproj">
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Briefcase.Example.Environments\Briefcase.Example.Environments.csproj">
+      <Project>{6a6e6d60-b3c9-4f02-8ea6-ea01cd2d0246}</Project>
+      <Name>Briefcase.Example.Environments</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Briefcase.Utils\Briefcase.Utils.csproj">
       <Project>{a5783a5d-00cd-49e0-b734-16350389fe07}</Project>
       <Name>Briefcase.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Briefcase\Briefcase.csproj">
+    <ProjectReference Include="..\..\Briefcase\Briefcase.csproj">
       <Project>{89bf90e4-77e5-4a37-8f76-43c6d956e33c}</Project>
       <Name>Briefcase</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

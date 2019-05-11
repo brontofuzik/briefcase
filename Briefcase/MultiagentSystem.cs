@@ -60,7 +60,7 @@ namespace Briefcase
         }
 
         private static RuntimeAgent MakeRealtime(Agent agent)
-            => new RealTimeAgent_Queue(agent);
+            => new RealTimeAgent_Mailbox(agent);
 
         #endregion // Real-time
 

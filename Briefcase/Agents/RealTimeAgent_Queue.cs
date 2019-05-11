@@ -8,10 +8,11 @@ namespace Briefcase.Agents
     internal class RealTimeAgent_Queue : RuntimeAgent
     {
         private readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
+        private readonly ManualResetEvent messagesResetEvent = new ManualResetEvent(false);
         private readonly Thread messageProcessingThread;
 
         internal RealTimeAgent_Queue(Agent agent)
-            :base(agent)
+            : base(agent)
         {        
             messageProcessingThread = new Thread(ProcessMessages)
             {
@@ -23,7 +24,7 @@ namespace Briefcase.Agents
         {
             while (true)
             {
-                //messagesResetEvent.WaitOne();
+                messagesResetEvent.WaitOne();
 
                 lock (messages)
                 {
@@ -33,8 +34,8 @@ namespace Briefcase.Agents
                         agent.HandleMessage(message);
                     }
 
-                    //if (messagesQueue.Count == 0)
-                    //    messagesResetEvent.Reset();
+                    if (messages.Count == 0)
+                        messagesResetEvent.Reset();
                 }
             }
         }

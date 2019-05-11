@@ -4,7 +4,6 @@ namespace Briefcase.Agents
 {
     internal class RealTimeAgent_Mailbox : RuntimeAgent
     {
-        private readonly Agent agent;
         private readonly MailboxProcessor<Message> mailbox;
 
         internal RealTimeAgent_Mailbox(Agent agent)

@@ -10,11 +10,13 @@ namespace Briefcase.Example.Simple
             var mas = new MultiagentSystem();
 
             mas.AddAgent(new SimpleAgent("simple1"));
-            //mas.AddAgent(new SimpleAgent("simple2"));
+            mas.AddAgent(new SimpleAgent("simple2"));
             mas.AddAgent(new Logger("logger"));
 
             //mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
-            mas.RunRealtime();
+            mas.RunRealtime(stepTime: TimeSpan.FromSeconds(0.5));
+
+            Console.ReadKey();
         }
     }
 

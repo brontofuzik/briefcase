@@ -51,7 +51,7 @@ namespace Briefcase.Example.Bdi
         public override void Step(int turn = 0)
         {
             // Sense
-            var percept = Environment.Perceive();
+            var percept = Environment.Perceive(Id);
 
             ReviseBeliefs(percept);
             Debug($"Agent.Step - {nameof(ReviseBeliefs)}");
@@ -204,7 +204,7 @@ namespace Briefcase.Example.Bdi
 
         private void ExecuteAction(FireWorldAction action)
         {
-            var actionResult = Environment.Act(action);
+            var actionResult = Environment.Act(Id, action);
 
             // Got water successfully?
             if (action == FireWorldAction.GetWater && actionResult)

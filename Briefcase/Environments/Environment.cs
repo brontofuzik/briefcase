@@ -51,19 +51,19 @@ namespace Briefcase.Environments
             passiveWorld.Initialize();
         }
 
-        public virtual TPercept Perceive(TSensor sensor = default)
-            => passiveWorld.Perceive();
+        public virtual TPercept Perceive(string agentId, TSensor sensor = default)
+            => passiveWorld.Perceive(agentId, sensor);
 
         // Real-time
-        public virtual Task<TPercept> PerceiveAsync(TSensor arg = default)
-            => activeWorld.PerceiveAsync();
+        public virtual Task<TPercept> PerceiveAsync(string agentId, TSensor sensor = default)
+            => activeWorld.PerceiveAsync(agentId, sensor);
 
         // Turn-based
-        public virtual TResult Act(TAction action)
-            => passiveWorld.DoAct(action);
+        public virtual TResult Act(string agentId, TAction action)
+            => passiveWorld.DoAct(agentId, action);
 
         // Real-time
-        public virtual Task<TResult> ActAsync(TAction action)
-            => activeWorld.ActAsync(action);
+        public virtual Task<TResult> ActAsync(string agentId, TAction action)
+            => activeWorld.ActAsync(agentId, action);
     }
 }

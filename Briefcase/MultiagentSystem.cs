@@ -13,9 +13,9 @@ namespace Briefcase
         protected readonly IDictionary<string, Agent> agents = new Dictionary<string, Agent>();
         private IDictionary<string, RuntimeAgent> runtimeAgents;
 
-        protected readonly Environment environment;
+        protected Environment environment;
         
-        public MultiagentSystem(Environment environment = null)
+        public void SetEnvironment(Environment environment)
         {
             this.environment = environment;
             if (environment != null)

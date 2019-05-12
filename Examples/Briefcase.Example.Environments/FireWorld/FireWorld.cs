@@ -54,7 +54,7 @@ namespace Briefcase.Example.Environments.FireWorld
                 world[random.Next(5, Size)] = Terrain.Fire;
         }
 
-        public override FireWorldPercept Perceive(object sensor = default)
+        public override FireWorldPercept Perceive(string agentId, object sensor = default)
         {
             // Left edge
             if (firemanPosition == 0)
@@ -84,7 +84,7 @@ namespace Briefcase.Example.Environments.FireWorld
                 });
         }
 
-        public override bool Act(FireWorldAction action)
+        public override bool Act(string agentId, FireWorldAction action)
         {
             bool result;
             switch (action)

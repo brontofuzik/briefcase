@@ -6,12 +6,12 @@
         {
         }
 
-        public abstract TPercept Perceive(TSensor sensor = default);
+        public abstract TPercept Perceive(string agentId, TSensor sensor = default);
 
-        public TResult DoAct(TAction action)
+        public TResult DoAct(string agentId, TAction action)
         {
             BeforeAct();
-            var result = Act(action);
+            var result = Act(agentId, action);
             AfterAct();
             return result;
         }
@@ -20,7 +20,7 @@
         {
         }
 
-        public abstract TResult Act(TAction action);
+        public abstract TResult Act(string agentId, TAction action);
 
         protected virtual void AfterAct()
         {

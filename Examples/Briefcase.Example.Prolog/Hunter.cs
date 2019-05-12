@@ -19,9 +19,9 @@ namespace Briefcase.Example.Prolog
 
         public override void Step(int turn = 0)
         {
-            var percept = Environment.Perceive();
+            var percept = Environment.Perceive(Id);
             var action = kb.RunAgent(percept);
-            var result = Environment.Act(action);
+            var result = Environment.Act(Id, action);
         }
 
         protected override void HandleMessage(Message message)

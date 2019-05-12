@@ -47,7 +47,7 @@ namespace Briefcase.Example.Environments.WumpusWorld
             hunterDirection = Direction.East;
         }
 
-        public override WumpusPercept Perceive(object sensor = default)
+        public override WumpusPercept Perceive(string agentId, object sensor = default)
         {
             WumpusPercept percept = 0;
 
@@ -87,7 +87,7 @@ namespace Briefcase.Example.Environments.WumpusWorld
             }
         }
 
-        public override ActionResult Act(WumpusAction action)
+        public override ActionResult Act(string agentId, WumpusAction action)
         {
             switch (action)
             {

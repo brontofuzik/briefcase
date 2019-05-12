@@ -3,6 +3,7 @@ using Briefcase.Agents;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Briefcase.Environments;
 using Briefcase.Utils;
 using Environment = Briefcase.Environments.Environment;
 using RuntimeEnvironment = Briefcase.Environments.RuntimeEnvironment;
@@ -46,24 +47,28 @@ namespace Briefcase
 
         #region Real-time
 
-        public void RunRealtime(TimeSpan? stepTime = null)
+        public void RunRealtime<TEnv>(TimeSpan? stepTime = null)
+            where TEnv : Environment
         {
             Initialize();
-            RunAgents_Realtime(stepTime);    
+            RunAgents_Realtime<TEnv>(stepTime);    
         }
 
-        private void RunAgents_Realtime(TimeSpan? stepTime = null)
+        private void RunAgents_Realtime<TEnv>(TimeSpan? stepTime = null)
+            where TEnv : Environment
         {
-            runtimeEnvironment = new RuntimeEnvironment(environment);
+            runtimeEnvironment = new RuntimeEnvironment<TEnv>((TEnv)environment);
+
             runtimeAgents = GetAllAgents()
-                .Select(a => MakeRealtime(a, runtimeEnvironment))
+                .Select(a => MakeRealtime(a, (RuntimeEnvironment<TEnv>)runtimeEnvironment))
                 .ToDictionary(a => a.Id);
 
             runtimeAgents.Values.ForEach(a => a.Run(stepTime));
         }
 
-        private static RuntimeAgent MakeRealtime(Agent agent, RuntimeEnvironment runtimeEnvironment)
-            => new RealTimeAgent_Mailbox(agent, runtimeEnvironment);
+        private static RuntimeAgent MakeRealtime<TEnv>(Agent agent, RuntimeEnvironment<TEnv> runtimeEnvironment)
+            where TEnv : Environment
+            => new RealTimeAgent_Mailbox<TEnv>(agent, runtimeEnvironment);
 
         #endregion // Real-time
 

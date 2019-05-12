@@ -7,14 +7,14 @@ using Environment = Briefcase.Environments.Environment;
 namespace Briefcase.Agents
 {
     // Decorator
-    internal class RealTimeAgent_Queue<E, S, P, A, R> : RuntimeAgent<E, S, P, A, R>
-        where E : Environment<S, P, A, R>
+    internal class RealTimeAgent_Queue<TEnv> : RuntimeAgent<TEnv>
+        where TEnv : Environment
     {
         private readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
         private readonly ManualResetEvent messagesResetEvent = new ManualResetEvent(false);
         private readonly Thread messageProcessingThread;
 
-        internal RealTimeAgent_Queue(Agent agent, RuntimeEnvironment<E, S, P, A, R> environment)
+        internal RealTimeAgent_Queue(Agent agent, RuntimeEnvironment<TEnv> environment)
             : base(agent, environment)
         {        
             messageProcessingThread = new Thread(ProcessMessages)

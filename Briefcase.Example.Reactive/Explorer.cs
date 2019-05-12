@@ -5,7 +5,7 @@ using Briefcase.Example.Environments.FireWorld;
 
 namespace Briefcase.Example.Reactive
 {
-    class Explorer : SituatedAgent<PlanetWorld, object, object, PlanetWorldAction, string>
+    class Explorer : SituatedAgent<PlanetWorld>
     {
         private static readonly Random rand = new Random();
 
@@ -43,7 +43,7 @@ namespace Briefcase.Example.Reactive
             => position.x == FireWorld.Size / 2
             && position.y == FireWorld.Size / 2;
 
-        protected override PlanetWorldAction PerceiveAndAct(object percept)
+        protected override object PerceiveAndAct(object percept)
         {
             if (collision)
             {

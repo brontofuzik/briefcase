@@ -39,15 +39,15 @@ namespace Briefcase.Environments
         public virtual string Show() => String.Empty;
     }
 
-    public class RuntimeEnvironment<E, S, P, A, R> : RuntimeEnvironment
-        where E : Environment<S, P, A, R>
+    public class RuntimeEnvironment<TEnv> : RuntimeEnvironment
+        where TEnv : Environment
     {
-        protected readonly ActiveEnvironment<S, P, A, R> activeWorld;
+        protected readonly ActiveEnvironment activeWorld;
 
-        protected RuntimeEnvironment(E passiveWorld)
+        public RuntimeEnvironment(TEnv passiveWorld)
             : base(passiveWorld)
         {
-            activeWorld = new ActiveEnvironment<S, P, A, R>(passiveWorld);
+            activeWorld = new ActiveEnvironment(passiveWorld);
         }
 
         //public override void Initialize()
@@ -55,32 +55,32 @@ namespace Briefcase.Environments
         //    passiveWorld.Initialize();
         //}
 
-        public virtual Task<P> PerceiveAsync(string agentId, S sensor = default)
+        public virtual Task<object> PerceiveAsync(string agentId, object sensor = default)
             => activeWorld.PerceiveAsync(agentId, sensor);
 
-        public virtual Task<R> ActAsync(string agentId, A action)
+        public virtual Task<object> ActAsync(string agentId, object action)
             => activeWorld.ActAsync(agentId, action);
 
-        public Task<R> PerceiveAndAct(string agentId, Func<P, A> actOnPercept)
+        public Task<object> PerceiveAndAct(string agentId, Func<object, object> actOnPercept)
             => activeWorld.PerceiveAndAct(agentId, actOnPercept);
     }
 
     // TODO Merge into RuntimeEnvironment.
-    public class ActiveEnvironment<S, P, A, R> : ActiveObject<Environment<S, P, A, R>>
+    public class ActiveEnvironment : ActiveObject<Environment>
     {
-        public ActiveEnvironment(Environment<S, P, A, R> passive)
+        public ActiveEnvironment(Environment passive)
             : base(passive)
         {
         }
 
-        public Task<P> PerceiveAsync(string agentId, S sensor = default)
+        public Task<object> PerceiveAsync(string agentId, object sensor = null)
             => CallFunction2(() => Passive.Perceive(agentId, sensor));
 
-        public Task<R> ActAsync(string agentId, A action)
+        public Task<object> ActAsync(string agentId, object action)
             => CallFunction2(() => Passive.Act(agentId, action));
 
         // Atomic
-        public Task<R> PerceiveAndAct(string agentId, Func<P, A> actOnPercept)
+        public Task<object> PerceiveAndAct(string agentId, Func<object, object> actOnPercept)
             => CallFunction2(() => Passive.Act(agentId, actOnPercept(Passive.Perceive(agentId))));
     }
 }

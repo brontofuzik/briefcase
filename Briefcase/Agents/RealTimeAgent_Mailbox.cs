@@ -3,12 +3,12 @@ using Briefcase.Environments;
 
 namespace Briefcase.Agents
 {
-    internal class RealTimeAgent_Mailbox<E, S, P, A, R> : RuntimeAgent<E, S, P, A, R>
-        where E : Environment<S, P, A, R>
+    internal class RealTimeAgent_Mailbox<TEnv> : RuntimeAgent<TEnv>
+        where TEnv : Environment
     {
         private readonly MailboxProcessor<Message> mailbox;
 
-        internal RealTimeAgent_Mailbox(Agent agent, RuntimeEnvironment<E, S, P, A, R> environment)
+        internal RealTimeAgent_Mailbox(Agent agent, RuntimeEnvironment<TEnv> environment)
             : base(agent, environment)
         {
             mailbox = MailboxProcessor.Start<Message>(async mb =>

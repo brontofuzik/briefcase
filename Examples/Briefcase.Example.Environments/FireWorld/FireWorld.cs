@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Briefcase.Environments;
 using Briefcase.Utils;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase.Example.Environments.FireWorld
 {
-    public class FireWorld : Environment<object, FireWorldPercept, FireWorldAction, bool>
+    public class FireWorld : Environment
     {
         public const int Size = 10;
 
@@ -54,7 +54,7 @@ namespace Briefcase.Example.Environments.FireWorld
                 world[random.Next(5, Size)] = Terrain.Fire;
         }
 
-        public override FireWorldPercept Perceive(string agentId, object sensor = default)
+        public override object Perceive(string agentId, object sensor = null)
         {
             // Left edge
             if (firemanPosition == 0)
@@ -84,67 +84,60 @@ namespace Briefcase.Example.Environments.FireWorld
                 });
         }
 
-        public override bool Act(string agentId, FireWorldAction action)
+        public override object Act(string agentId, object action)
         {
-            bool result;
-            switch (action)
+            var a = (FireWorldAction)action;
+            switch (a)
             {
                 case FireWorldAction.MoveLeft:
                     if (firemanPosition > 0)
                     {
                         firemanPosition -= 1;
-                        result = true;
+                        return true;
                     }
                     else
                     {
-                        result = false;
+                        return false;
                     }
-                    break;
 
                 case FireWorldAction.MoveRight:
                     if (firemanPosition < Size - 1)
                     {
                         firemanPosition += 1;
-                        result = true;
+                        return true;
                     }
                     else
                     {
-                        result = false;
+                        return false;
                     }
-                    break;
 
                 case FireWorldAction.GetWater:
                     if (world[firemanPosition] == Terrain.Water)
                     {
                         world[firemanPosition] = Terrain.GettingWater;
                         firemanHasWater = true;
-                        result = true;
+                        return true;
                     }
                     else
                     {
-                        result = false;
+                        return false;
                     }
-                    break;
 
                 case FireWorldAction.ExtinguishFire:
                     if (world[firemanPosition] == Terrain.Fire)
                     {
                         world[firemanPosition] = Terrain.Normal;
                         firemanHasWater = false;
-                        result = true; // Message: fire-out
+                        return true;
                     }
                     else
                     {
-                        result = false;
+                        return false;
                     }
-                    break;
 
                 default:
-                    result = false;
-                    break;
+                    return false;
             }
-
-            return result;
         }
 
         // No lock on terrain is necessary!

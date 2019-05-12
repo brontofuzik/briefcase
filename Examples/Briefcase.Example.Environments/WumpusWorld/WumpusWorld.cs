@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Briefcase.Environments;
 using Briefcase.Utils;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase.Example.Environments.WumpusWorld
 {
-    public class WumpusWorld : Environment<object, WumpusPercept, WumpusAction, ActionResult>
+    public class WumpusWorld : Environment
     {
         private const int Size = 4;
 
@@ -46,7 +46,7 @@ namespace Briefcase.Example.Environments.WumpusWorld
             hunterDirection = Direction.East;
         }
 
-        public override WumpusPercept Perceive(string agentId, object sensor = default)
+        public override object Perceive(string agentId, object sensor = null)
         {
             WumpusPercept percept = 0;
 
@@ -86,9 +86,10 @@ namespace Briefcase.Example.Environments.WumpusWorld
             }
         }
 
-        public override ActionResult Act(string agentId, WumpusAction action)
+        public override object Act(string agentId, object action)
         {
-            switch (action)
+            var a = (WumpusAction) action;
+            switch (a)
             {
                 case WumpusAction.MoveForward:
                     return Act_MoveForward();

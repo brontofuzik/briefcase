@@ -16,7 +16,7 @@ namespace Briefcase.Example.Reactive
             for (int i = 1; i <= Explorers; i++)
                 mas.AddAgent(new Explorer($"explorer{i}"));
 
-            mas.RunRealtime(stepTime: TimeSpan.FromSeconds(0.5));
+            mas.RunRealtime<PlanetWorld>(stepTime: TimeSpan.FromSeconds(0.5));
         }
     }
 }

@@ -12,17 +12,17 @@ namespace Briefcase.Agents
         internal Environment Environment { get; set; }
     }
 
-    public abstract class SituatedAgent<E, S, P, A, R> : SituatedAgent
-        where E : Environment<S, P, A, R>
+    public abstract class SituatedAgent<TEnv> : SituatedAgent
+        where TEnv : Environment
     {
         protected SituatedAgent(string id)
             : base(id)
         {
         }
 
-        protected new E Environment
+        protected new TEnv Environment
         {
-            get => (E)base.Environment;
+            get => (TEnv)base.Environment;
             set => base.Environment = value;
         }
 
@@ -33,6 +33,6 @@ namespace Briefcase.Agents
             var result = Environment.Act(Id, action);
         }
 
-        protected abstract A PerceiveAndAct(P arg);
+        protected internal abstract object PerceiveAndAct(object percept);
     }
 }

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Briefcase.Environments;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase.Agents
 {
@@ -40,12 +41,12 @@ namespace Briefcase.Agents
         public abstract void Post(Message message);
     }
 
-    internal abstract class RuntimeAgent<E, S, P, A, R> : RuntimeAgent
-        where E : Environment<S, P, A, R>
+    internal abstract class RuntimeAgent<TEnv> : RuntimeAgent
+        where TEnv : Environment
     {      
-        private readonly RuntimeEnvironment<E, S, P, A, R> environment;
+        private readonly RuntimeEnvironment<TEnv> environment;
 
-        protected RuntimeAgent(Agent agent, RuntimeEnvironment<E, S, P, A, R> environment)
+        protected RuntimeAgent(Agent agent, RuntimeEnvironment<TEnv> environment)
             : base(agent)
         {
             this.environment = environment;
@@ -56,7 +57,7 @@ namespace Briefcase.Agents
             while (true)
             {
                 //agent.Step();
-                await environment.PerceiveAndAct(Id, agent.Perceive);
+                await environment.PerceiveAndAct(Id, ((SituatedAgent<TEnv>)agent).PerceiveAndAct);
 
                 if (stepTime.HasValue)
                     await Task.Delay(stepTime.Value);

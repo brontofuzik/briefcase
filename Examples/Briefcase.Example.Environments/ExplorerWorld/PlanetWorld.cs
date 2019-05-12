@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Briefcase.Environments;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase.Example.Environments.ExplorerWorld
 {
-    public class PlanetWorld : Environment<object, object, PlanetWorldAction, string>
+    public class PlanetWorld : Environment
     {
         private const int Size = 11;
         private const int Resources = 10;
@@ -48,36 +48,37 @@ namespace Briefcase.Example.Environments.ExplorerWorld
             throw new NotImplementedException();
         }
 
-        public override string Act(string agentId, PlanetWorldAction action)
+        public override object Act(string agentId, object action)
         {
-            switch (action.Type)
+            var a = (PlanetWorldAction)action;
+            switch (a.Type)
             {
                 case PlanetWorldAction.T.Init:
-                    return Handle_Init(agentId, ((int, int))action.Arg);
+                    return Act_Init(agentId, ((int, int))a.Arg);
 
                 case PlanetWorldAction.T.Move:
-                    return Handle_Move(agentId, ((int, int))action.Arg);
+                    return Act_Move(agentId, ((int, int))a.Arg);
 
                 case PlanetWorldAction.T.Load:
-                    return Handle_Load(agentId, (string)action.Arg);
+                    return Act_Load(agentId, (string)a.Arg);
 
                 case PlanetWorldAction.T.Carry:
-                    return Handle_Carry(agentId, ((int, int))action.Arg);
+                    return Act_Carry(agentId, ((int, int))a.Arg);
 
                 case PlanetWorldAction.T.Unload:
-                    return Handle_Unload(agentId, (string)action.Arg);
+                    return Act_Unload(agentId, (string)a.Arg);
             }
 
             return null;
         }
 
-        private string Handle_Init(string agentId, (int, int) position)
+        private string Act_Init(string agentId, (int, int) position)
         {
             ExplorerPositions.Add(agentId, position);
             return null;
         }
 
-        private string Handle_Move(string agentId, (int, int) position)
+        private string Act_Move(string agentId, (int, int) position)
         {
             ExplorerPositions[agentId] = position;
 
@@ -101,13 +102,13 @@ namespace Briefcase.Example.Environments.ExplorerWorld
             return null;
         }
 
-        private string Handle_Load(string agentId, string sampleId)
+        private string Act_Load(string agentId, string sampleId)
         {
             Loads[agentId] = sampleId; 
             return null;
         }
 
-        private string Handle_Carry(string agentId, (int, int) position)
+        private string Act_Carry(string agentId, (int, int) position)
         {
             ExplorerPositions[agentId] = position;
             string sampleId = Loads[agentId];
@@ -116,7 +117,7 @@ namespace Briefcase.Example.Environments.ExplorerWorld
             return null;
         }
 
-        private string Handle_Unload(string agentId, string sampleId)
+        private string Act_Unload(string agentId, string sampleId)
         {
             Loads.Remove(agentId);
             return null;

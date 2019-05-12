@@ -3,7 +3,7 @@ using Briefcase.Example.Environments.WumpusWorld;
 
 namespace Briefcase.Example.Prolog
 {
-    class Hunter : SituatedAgent<WumpusWorld, object, WumpusPercept, WumpusAction, ActionResult>
+    class Hunter : SituatedAgent<WumpusWorld>
     {
         private readonly IKnowledgeBase kb = null; // TODO
 
@@ -17,8 +17,8 @@ namespace Briefcase.Example.Prolog
             kb.InitAgent(4, 0.2, (1, 1), 0);
         }
 
-        protected override WumpusAction PerceiveAndAct(WumpusPercept percept)
-            => kb.RunAgent(percept);
+        protected override object PerceiveAndAct(object percept)
+            => kb.RunAgent((WumpusPercept)percept);
 
         protected override void HandleMessage(Message message)
         {

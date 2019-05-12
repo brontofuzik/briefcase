@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Briefcase.Environments;
 using Briefcase.Utils;
 
 namespace Briefcase.Example.Environments.WumpusWorld
 {
-    public class WumpusWorld : PassiveWorld<object, WumpusPercept, WumpusAction, ActionResult>
+    public class WumpusWorld : Environment<object, WumpusPercept, WumpusAction, ActionResult>
     {
         private const int Size = 4;
 

@@ -6,7 +6,7 @@ using Briefcase.Utils;
 
 namespace Briefcase.Example.Environments.FireWorld
 {
-    public class FireWorld : PassiveWorld<object, FireWorldPercept, FireWorldAction, bool>
+    public class FireWorld : Environment<object, FireWorldPercept, FireWorldAction, bool>
     {
         public const int Size = 10;
 

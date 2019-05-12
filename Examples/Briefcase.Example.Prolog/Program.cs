@@ -9,7 +9,7 @@ namespace Briefcase.Example.Prolog
         {
             var mas = new MultiagentSystem();
 
-            mas.SetEnvironment(new WumpusEnvironment(new WumpusWorld()));
+            mas.SetEnvironment(new WumpusWorld());
 
             mas.AddAgent(new Hunter("hunter"));
 

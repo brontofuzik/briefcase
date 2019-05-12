@@ -11,7 +11,7 @@ namespace Briefcase.Example.Reactive
         {
             var mas = new MultiagentSystem();
 
-            mas.SetEnvironment(new PlanetEnvironment(new PlanetWorld()));
+            mas.SetEnvironment(new PlanetWorld());
 
             for (int i = 1; i <= Explorers; i++)
                 mas.AddAgent(new Explorer($"explorer{i}"));

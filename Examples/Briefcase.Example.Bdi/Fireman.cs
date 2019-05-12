@@ -7,7 +7,7 @@ using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi
 {
-    class Fireman : SituatedAgent<FireEnvironment>
+    class Fireman : SituatedAgent<FireWorld, object, FireWorldPercept, FireWorldAction, bool>
     {
         // Beliefs
 
@@ -50,10 +50,16 @@ namespace Briefcase.Example.Bdi
 
         public override void Step(int turn = 0)
         {
-            // Sense
             var percept = Environment.Perceive(Id);
+            var action = PerceiveAndAct(percept);
+            var result = Environment.Act(Id, action);
+            ProcessActionResult(action, result);
+        }
 
+        protected override FireWorldAction PerceiveAndAct(FireWorldPercept percept)
+        {
             ReviseBeliefs(percept);
+
             Debug($"Agent.Step - {nameof(ReviseBeliefs)}");
 
             GenerateDesires();
@@ -62,13 +68,7 @@ namespace Briefcase.Example.Bdi
             AdoptIntention();
             Debug($"Agent.Step - {nameof(AdoptIntention)}");
 
-            // Act
-            var action = NextAction();
-            if (action.HasValue)
-            {
-                ExecuteAction(action.Value);
-                Debug($"Agent.Step - {nameof(ExecuteAction)}");
-            }
+            return NextAction() ?? default;
         }
 
         private void ReviseBeliefs(FireWorldPercept percept)
@@ -202,10 +202,8 @@ namespace Briefcase.Example.Bdi
             return action;
         }
 
-        private void ExecuteAction(FireWorldAction action)
+        private void ProcessActionResult(FireWorldAction action, bool actionResult)
         {
-            var actionResult = Environment.Act(Id, action);
-
             // Got water successfully?
             if (action == FireWorldAction.GetWater && actionResult)
                 beliefs[HaveWater] = True;

@@ -4,7 +4,7 @@ using Briefcase.Environments;
 
 namespace Briefcase.Example.Environments.ExplorerWorld
 {
-    public class PlanetWorld : PassiveWorld<object, object, PlanetWorldAction, string>
+    public class PlanetWorld : Environment<object, object, PlanetWorldAction, string>
     {
         private const int Size = 11;
         private const int Resources = 10;

@@ -5,7 +5,7 @@ using Briefcase.Example.Environments.FireWorld;
 
 namespace Briefcase.Example.Reactive
 {
-    class Explorer : SituatedAgent<PlanetEnvironment>
+    class Explorer : SituatedAgent<PlanetWorld, object, object, PlanetWorldAction, string>
     {
         private static readonly Random rand = new Random();
 
@@ -43,78 +43,64 @@ namespace Briefcase.Example.Reactive
             => position.x == FireWorld.Size / 2
             && position.y == FireWorld.Size / 2;
 
-        public override void Step(int turn = 0)
+        protected override PlanetWorldAction PerceiveAndAct(object percept)
         {
             if (collision)
             {
                 MoveRandomly();
                 collision = false;
 
-                var result = Environment.Act(Id, new PlanetWorldAction
+                return new PlanetWorldAction
                 {
                     Type = PlanetWorldAction.T.Move,
                     Arg = position
-                });
-
-                // TODO Handle result.
-                if (result != null)
-                {
-                    sampleDetected = result;
-                }
+                };
             }
-            else if (carrying && IsAtBase())
+
+            if (carrying && IsAtBase())
             {
                 // If carrying samples and at the base, then unload samples.
                 carrying = false;
-                Environment.Act(Id, new PlanetWorldAction
+                return new PlanetWorldAction
                 {
                     Type = PlanetWorldAction.T.Unload,
                     Arg = carriedResource
-                });
+                };
             }
-            else if (carrying && !IsAtBase())
+
+            if (carrying && !IsAtBase())
             {
                 // If carrying samples and not at the base, then travel up gradient.
                 MoveToBase();
-                Environment.Act(Id, new PlanetWorldAction
+
+                return new PlanetWorldAction
                 {
                     Type = PlanetWorldAction.T.Carry,
                     Arg = position
-                });
+                };
             }
-            else if (sampleDetected != null)
+
+            if (sampleDetected != null)
             {
                 // If you detect a sample, then pick sample up.
                 carrying = true;
                 carriedResource = sampleDetected;
-                Environment.Act(Id, new PlanetWorldAction
+
+                return new PlanetWorldAction
                 {
                     Type = PlanetWorldAction.T.Load,
                     Arg = sampleDetected
-                });
+                };
             }
-            else
+
+            // If (true), then move randomly.
+            MoveRandomly();
+
+            return new PlanetWorldAction
             {
-                // If (true), then move randomly.
-                MoveRandomly();
-
-                var result = Environment.Act(Id, new PlanetWorldAction
-                {
-                    Type = PlanetWorldAction.T.Move,
-                    Arg = position
-                });
-
-                // TODO Handle result.
-                if (result != null)
-                {
-                    sampleDetected = result;
-                }
-            }
-        }
-
-        protected override void HandleMessage(Message message)
-        {
-            // Do nothing.
+                Type = PlanetWorldAction.T.Move,
+                Arg = position
+            };
         }
 
         private void MoveRandomly()
@@ -137,6 +123,11 @@ namespace Briefcase.Example.Reactive
                 position.x += Math.Sign(dx);
             else
                 position.y += Math.Sign(dy);
+        }
+
+        protected override void HandleMessage(Message message)
+        {
+            // Do nothing.
         }
     }
 }

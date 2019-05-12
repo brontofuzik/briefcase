@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading;
+using Briefcase.Environments;
+using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase.Agents
 {
     // Decorator
-    internal class RealTimeAgent_Queue : RuntimeAgent
+    internal class RealTimeAgent_Queue<E, S, P, A, R> : RuntimeAgent<E, S, P, A, R>
+        where E : Environment<S, P, A, R>
     {
         private readonly ConcurrentQueue<Message> messages = new ConcurrentQueue<Message>();
         private readonly ManualResetEvent messagesResetEvent = new ManualResetEvent(false);
         private readonly Thread messageProcessingThread;
 
-        internal RealTimeAgent_Queue(Agent agent)
-            : base(agent)
+        internal RealTimeAgent_Queue(Agent agent, RuntimeEnvironment<E, S, P, A, R> environment)
+            : base(agent, environment)
         {        
             messageProcessingThread = new Thread(ProcessMessages)
             {

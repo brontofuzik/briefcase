@@ -41,14 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExplorerWorld\PlanetEnvironment.cs" />
     <Compile Include="ExplorerWorld\PlanetWorld.cs" />
     <Compile Include="ExplorerWorld\PlanetWorldIface.cs" />
     <Compile Include="FireWorld\FireWorld.cs" />
     <Compile Include="FireWorld\FireWorldIface.cs" />
-    <Compile Include="FireWorld\FireEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WumpusWorld\WumpusEnvironment.cs" />
     <Compile Include="WumpusWorld\WumpusWorld.cs" />
     <Compile Include="WumpusWorld\WumpusWorldIface.cs" />
   </ItemGroup>

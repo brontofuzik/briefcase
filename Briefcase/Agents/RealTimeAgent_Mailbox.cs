@@ -1,13 +1,15 @@
 ﻿using Actress;
+using Briefcase.Environments;
 
 namespace Briefcase.Agents
 {
-    internal class RealTimeAgent_Mailbox : RuntimeAgent
+    internal class RealTimeAgent_Mailbox<E, S, P, A, R> : RuntimeAgent<E, S, P, A, R>
+        where E : Environment<S, P, A, R>
     {
         private readonly MailboxProcessor<Message> mailbox;
 
-        internal RealTimeAgent_Mailbox(Agent agent)
-            : base(agent)
+        internal RealTimeAgent_Mailbox(Agent agent, RuntimeEnvironment<E, S, P, A, R> environment)
+            : base(agent, environment)
         {
             mailbox = MailboxProcessor.Start<Message>(async mb =>
             {

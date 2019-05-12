@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Briefcase.Utils;
 using Environment = Briefcase.Environments.Environment;
+using RuntimeEnvironment = Briefcase.Environments.RuntimeEnvironment;
 
 namespace Briefcase
 {
@@ -14,6 +15,7 @@ namespace Briefcase
         private IDictionary<string, RuntimeAgent> runtimeAgents;
 
         protected Environment environment;
+        private RuntimeEnvironment runtimeEnvironment;
         
         public void SetEnvironment(Environment environment)
         {
@@ -52,15 +54,16 @@ namespace Briefcase
 
         private void RunAgents_Realtime(TimeSpan? stepTime = null)
         {
+            runtimeEnvironment = new RuntimeEnvironment(environment);
             runtimeAgents = GetAllAgents()
-                .Select(MakeRealtime)
+                .Select(a => MakeRealtime(a, runtimeEnvironment))
                 .ToDictionary(a => a.Id);
 
             runtimeAgents.Values.ForEach(a => a.Run(stepTime));
         }
 
-        private static RuntimeAgent MakeRealtime(Agent agent)
-            => new RealTimeAgent_Mailbox(agent);
+        private static RuntimeAgent MakeRealtime(Agent agent, RuntimeEnvironment runtimeEnvironment)
+            => new RealTimeAgent_Mailbox(agent, runtimeEnvironment);
 
         #endregion // Real-time
 

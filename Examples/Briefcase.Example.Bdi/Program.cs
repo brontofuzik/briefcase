@@ -11,7 +11,7 @@ namespace Briefcase.Example.Bdi
         {
             var mas = new MultiagentSystem();
 
-            mas.SetEnvironment(new FireEnvironment(new FireWorld()));
+            mas.SetEnvironment(new FireWorld());
 
             mas.AddAgent(new Fireman("sam"));
 

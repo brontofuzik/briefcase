@@ -7,7 +7,7 @@ using Briefcase.Utils;
 
 namespace Briefcase.Example.Bdi
 {
-    class Fireman : SituatedAgent<FireWorld>
+    class Fireman : SituatedAgent
     {
         // Beliefs
 
@@ -50,7 +50,7 @@ namespace Briefcase.Example.Bdi
 
         public override void Step(int turn = 0)
         {
-            var percept = Environment.Perceive(Id);
+            var percept = base.Environment.Perceive(Id);
             var action = PerceiveAndAct(percept);
             var result = Environment.Act(Id, action);
             ProcessActionResult((FireWorldAction)action, (bool)result);

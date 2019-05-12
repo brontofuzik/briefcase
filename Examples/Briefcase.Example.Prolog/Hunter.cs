@@ -3,7 +3,7 @@ using Briefcase.Example.Environments.WumpusWorld;
 
 namespace Briefcase.Example.Prolog
 {
-    class Hunter : SituatedAgent<WumpusWorld>
+    class Hunter : SituatedAgent
     {
         private readonly IKnowledgeBase kb = null; // TODO
 

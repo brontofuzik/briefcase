@@ -9,22 +9,7 @@ namespace Briefcase.Agents
         {
         }
 
-        internal Environment Environment { get; set; }
-    }
-
-    public abstract class SituatedAgent<TEnv> : SituatedAgent
-        where TEnv : Environment
-    {
-        protected SituatedAgent(string id)
-            : base(id)
-        {
-        }
-
-        protected new TEnv Environment
-        {
-            get => (TEnv)base.Environment;
-            set => base.Environment = value;
-        }
+        protected internal Environment Environment { get; set; }
 
         public override void Step(int turn = 0)
         {

@@ -5,16 +5,26 @@ namespace Briefcase.Environments
 {
     public class RuntimeEnvironment
     {
-        private readonly Environment env;
+        protected readonly ActiveEnvironment activeWorld;
 
         public RuntimeEnvironment(Environment env)
         {
-            this.env = env;
+            activeWorld = new ActiveEnvironment(env);
         }
 
-        //public virtual void Initialize()
+        //public override void Initialize()
         //{
+        //    passiveWorld.Initialize();
         //}
+
+        public virtual Task<object> PerceiveAsync(string agentId, object sensor = default)
+            => activeWorld.PerceiveAsync(agentId, sensor);
+
+        public virtual Task<object> ActAsync(string agentId, object action)
+            => activeWorld.ActAsync(agentId, action);
+
+        public Task<object> PerceiveAndAct(string agentId, Func<object, object> actOnPercept)
+            => activeWorld.PerceiveAndAct(agentId, actOnPercept);
 
         // Real-time & turn-based
         public virtual void BeforeAct()
@@ -37,32 +47,6 @@ namespace Briefcase.Environments
         }
 
         public virtual string Show() => String.Empty;
-    }
-
-    public class RuntimeEnvironment<TEnv> : RuntimeEnvironment
-        where TEnv : Environment
-    {
-        protected readonly ActiveEnvironment activeWorld;
-
-        public RuntimeEnvironment(TEnv passiveWorld)
-            : base(passiveWorld)
-        {
-            activeWorld = new ActiveEnvironment(passiveWorld);
-        }
-
-        //public override void Initialize()
-        //{
-        //    passiveWorld.Initialize();
-        //}
-
-        public virtual Task<object> PerceiveAsync(string agentId, object sensor = default)
-            => activeWorld.PerceiveAsync(agentId, sensor);
-
-        public virtual Task<object> ActAsync(string agentId, object action)
-            => activeWorld.ActAsync(agentId, action);
-
-        public Task<object> PerceiveAndAct(string agentId, Func<object, object> actOnPercept)
-            => activeWorld.PerceiveAndAct(agentId, actOnPercept);
     }
 
     // TODO Merge into RuntimeEnvironment.

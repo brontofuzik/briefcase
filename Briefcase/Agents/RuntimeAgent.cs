@@ -2,20 +2,21 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Briefcase.Environments;
-using Environment = Briefcase.Environments.Environment;
 
 namespace Briefcase.Agents
 {
     internal abstract class RuntimeAgent : IRuntimeAgent
     {
         protected readonly Agent agent;
+        private readonly RuntimeEnvironment environment;
 
         private readonly Thread actionThread;
         protected TimeSpan? stepTime;
 
-        protected RuntimeAgent(Agent agent)
+        protected RuntimeAgent(Agent agent, RuntimeEnvironment environment)
         {
             this.agent = agent;
+            this.environment = environment;
 
             actionThread = new Thread(Act)
             {
@@ -25,7 +26,17 @@ namespace Briefcase.Agents
 
         public string Id => agent.Id;
 
-        protected abstract void Act();
+        protected async void Act()
+        {
+            while (true)
+            {
+                //agent.Step();
+                await environment.PerceiveAndAct(Id, ((SituatedAgent)agent).PerceiveAndAct);
+
+                if (stepTime.HasValue)
+                    await Task.Delay(stepTime.Value);
+            }
+        }
 
         public virtual void Run(TimeSpan? stepTime)
         {
@@ -39,30 +50,6 @@ namespace Briefcase.Agents
         }
 
         public abstract void Post(Message message);
-    }
-
-    internal abstract class RuntimeAgent<TEnv> : RuntimeAgent
-        where TEnv : Environment
-    {      
-        private readonly RuntimeEnvironment<TEnv> environment;
-
-        protected RuntimeAgent(Agent agent, RuntimeEnvironment<TEnv> environment)
-            : base(agent)
-        {
-            this.environment = environment;
-        }
-
-        protected override async void Act()
-        {
-            while (true)
-            {
-                //agent.Step();
-                await environment.PerceiveAndAct(Id, ((SituatedAgent<TEnv>)agent).PerceiveAndAct);
-
-                if (stepTime.HasValue)
-                    await Task.Delay(stepTime.Value);
-            }
-        }
     }
 
     interface IRuntimeAgent

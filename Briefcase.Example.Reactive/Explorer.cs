@@ -5,7 +5,7 @@ using Briefcase.Example.Environments.FireWorld;
 
 namespace Briefcase.Example.Reactive
 {
-    class Explorer : SituatedAgent<PlanetWorld>
+    class Explorer : SituatedAgent
     {
         private static readonly Random rand = new Random();
 

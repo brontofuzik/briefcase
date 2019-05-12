@@ -47,28 +47,25 @@ namespace Briefcase
 
         #region Real-time
 
-        public void RunRealtime<TEnv>(TimeSpan? stepTime = null)
-            where TEnv : Environment
+        public void RunRealtime(TimeSpan? stepTime = null)
         {
             Initialize();
-            RunAgents_Realtime<TEnv>(stepTime);    
+            RunAgents_Realtime(stepTime);    
         }
 
-        private void RunAgents_Realtime<TEnv>(TimeSpan? stepTime = null)
-            where TEnv : Environment
+        private void RunAgents_Realtime(TimeSpan? stepTime = null)
         {
-            runtimeEnvironment = new RuntimeEnvironment<TEnv>((TEnv)environment);
+            runtimeEnvironment = new RuntimeEnvironment(environment);
 
             runtimeAgents = GetAllAgents()
-                .Select(a => MakeRealtime(a, (RuntimeEnvironment<TEnv>)runtimeEnvironment))
+                .Select(a => MakeRealtime(a, runtimeEnvironment))
                 .ToDictionary(a => a.Id);
 
             runtimeAgents.Values.ForEach(a => a.Run(stepTime));
         }
 
-        private static RuntimeAgent MakeRealtime<TEnv>(Agent agent, RuntimeEnvironment<TEnv> runtimeEnvironment)
-            where TEnv : Environment
-            => new RealTimeAgent_Mailbox<TEnv>(agent, runtimeEnvironment);
+        private static RuntimeAgent MakeRealtime(Agent agent, RuntimeEnvironment runtimeEnvironment)
+            => new RealTimeAgent_Mailbox(agent, runtimeEnvironment);
 
         #endregion // Real-time
 

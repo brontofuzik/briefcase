@@ -16,7 +16,7 @@ namespace Briefcase.Example.Bdi
             mas.AddAgent(new Fireman("sam"));
 
             // Run real-time or turn-based?
-            mas.RunRealtime<FireWorld>(TimeSpan.FromSeconds(0.5));
+            mas.RunRealtime(TimeSpan.FromSeconds(0.5));
             //mas.RunTurnbased(stepTime: TimeSpan.FromSeconds(0.5));
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Briefcase.Environments
 {
@@ -14,5 +15,8 @@ namespace Briefcase.Environments
 
         public Task<TResult> ActAsync(string agentId, TAction action)
             => CallFunction2(() => Passive.Act(agentId, action));
+
+        public Task<TResult> PerceiveAndAct(string agentId, Func<TPercept, TAction> actOnPercept)
+            => CallFunction2(() => Passive.Act(agentId, actOnPercept(Passive.Perceive(agentId))));
     }
 }

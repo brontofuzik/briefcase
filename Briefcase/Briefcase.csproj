@@ -46,6 +46,7 @@
     <Compile Include="Agents\RuntimeAgent.cs" />
     <Compile Include="Agents\RealTimeAgent_Queue.cs" />
     <Compile Include="Agents\RealTimeAgent_Mailbox.cs" />
+    <Compile Include="Agents\SituatedAgent.cs" />
     <Compile Include="Environments\ActiveWorld.cs" />
     <Compile Include="Environments\Environment.cs" />
     <Compile Include="Environments\PassiveWorld.cs" />

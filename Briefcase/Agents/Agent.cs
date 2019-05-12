@@ -4,15 +4,13 @@ namespace Briefcase.Agents
 {
     public abstract class Agent
     {
-        private readonly string name;
-
-        protected Agent(string name)
+        protected Agent(string id)
         {
-            this.name = name;
+            Id = id;
         }
 
         // FIPA AID
-        public string Id => $"{name}";
+        public string Id { get; }
 
         internal MultiagentSystem Mas { get; set; }
 
@@ -24,7 +22,7 @@ namespace Briefcase.Agents
 
         protected void Send(string receiver, string content, string conversationId = null)
         {
-            Mas.Send(new Message(name, receiver, content, conversationId));
+            Mas.Send(new Message(Id, receiver, content, conversationId));
         }
 
         protected void Send(IEnumerable<string> receivers, string content, string conversationId = null)

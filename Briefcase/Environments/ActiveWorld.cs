@@ -16,6 +16,7 @@ namespace Briefcase.Environments
         public Task<TResult> ActAsync(string agentId, TAction action)
             => CallFunction2(() => Passive.Act(agentId, action));
 
+        // Atomic
         public Task<TResult> PerceiveAndAct(string agentId, Func<TPercept, TAction> actOnPercept)
             => CallFunction2(() => Passive.Act(agentId, actOnPercept(Passive.Perceive(agentId))));
     }

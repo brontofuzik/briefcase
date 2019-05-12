@@ -17,8 +17,8 @@ namespace Briefcase.Example.Reactive
         private bool carrying;
         private string carriedResource;
 
-        public Explorer(string name)
-            : base(name)
+        public Explorer(string id)
+            : base(id)
         {
         }
 

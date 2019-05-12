@@ -35,8 +35,8 @@ namespace Briefcase.Example.Bdi
         private string intention = String.Empty;
         private readonly List<FireWorldAction> plan = new List<FireWorldAction>();
 
-        public Fireman(string name)
-            : base(name)
+        public Fireman(string id)
+            : base(id)
         {
         }
 

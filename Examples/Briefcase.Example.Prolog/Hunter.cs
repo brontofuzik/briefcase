@@ -7,8 +7,8 @@ namespace Briefcase.Example.Prolog
     {
         private readonly IKnowledgeBase kb = null; // TODO
 
-        public Hunter(string name)
-            : base(name)
+        public Hunter(string id)
+            : base(id)
         {
         }
 

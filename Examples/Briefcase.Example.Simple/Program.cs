@@ -22,8 +22,8 @@ namespace Briefcase.Example.Simple
 
     class SimpleAgent : Agent
     {
-        public SimpleAgent(string name)
-            : base(name)
+        public SimpleAgent(string id)
+            : base(id)
         {
         }
 
@@ -40,8 +40,8 @@ namespace Briefcase.Example.Simple
 
     class Logger : Agent
     {
-        public Logger(string name)
-            : base(name)
+        public Logger(string id)
+            : base(id)
         {
         }
 

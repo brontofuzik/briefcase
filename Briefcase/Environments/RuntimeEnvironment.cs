@@ -3,38 +3,30 @@ using System.Threading.Tasks;
 
 namespace Briefcase.Environments
 {
-    public class RuntimeEnvironment
+    public class RuntimeEnvironment : IRuntimeEnvironment
     {
-        protected readonly ActiveEnvironment activeWorld;
+        private readonly Environment passive;
+        protected readonly ActiveEnvironment active;
 
         public RuntimeEnvironment(Environment env)
         {
-            activeWorld = new ActiveEnvironment(env);
+            passive = env;
+            active = new ActiveEnvironment(env);
         }
 
-        //public override void Initialize()
-        //{
-        //    passiveWorld.Initialize();
-        //}
+        public void Initialize()
+        {
+            passive.Initialize();
+        }
 
         public virtual Task<object> PerceiveAsync(string agentId, object sensor = default)
-            => activeWorld.PerceiveAsync(agentId, sensor);
+            => active.PerceiveAsync(agentId, sensor);
 
         public virtual Task<object> ActAsync(string agentId, object action)
-            => activeWorld.ActAsync(agentId, action);
+            => active.ActAsync(agentId, action);
 
         public Task<object> PerceiveAndAct(string agentId, Func<object, object> actOnPercept)
-            => activeWorld.PerceiveAndAct(agentId, actOnPercept);
-
-        // Real-time & turn-based
-        public virtual void BeforeAct()
-        {
-        }
-
-        // Real-time & turn-based
-        public virtual void AfterAct()
-        {
-        }
+            => active.PerceiveAndAct(agentId, actOnPercept);
 
         // Turn-based only
         public virtual void BeginTurn(int turn)
@@ -47,6 +39,11 @@ namespace Briefcase.Environments
         }
 
         public virtual string Show() => String.Empty;
+    }
+
+    public interface IRuntimeEnvironment
+    {
+        void Initialize();
     }
 
     // TODO Merge into RuntimeEnvironment.
